@@ -1,0 +1,36 @@
+<div class="settings-button" *ngIf="!settingsOpen">
+	<button class="btn btn-default" (click)="toggleSettings()">
+		Settings
+	</button>
+</div>
+<ng-container *ngIf="settingsOpen">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			Settings
+		</div>
+		<div class="panel-body">
+			<!-- <input class="form-control" type="text" /> -->
+
+			<select
+				class="form-control"
+				*ngIf="voices"
+				(change)="onChange($event.target.value)"
+			>
+				<option
+					[selected]="selectedIndex === i"
+					*ngFor="let v of voices; let i = index"
+					[value]="i"
+				>
+					{{ v.name }} ({{ v.lang }})
+				</option>
+			</select>
+
+			<button class="btn btn-primary" (click)="updateVoice()">
+				Update
+			</button>
+			<button class="btn btn-default" (click)="toggleSettings()">
+				Close
+			</button>
+		</div>
+	</div>
+</ng-container>

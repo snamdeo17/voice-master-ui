@@ -1,0 +1,25 @@
+<app-settings></app-settings>
+<div class="alert" *ngIf="!(micAccess$ | async)">
+	No microphone access! You need to give micphone access. (You may click refresh
+	button to be prompted mic access pop up)
+</div>
+
+<h4>
+	{{ state$ | async }}
+</h4>
+
+<div>
+	<img
+		[ngClass]="getImageClass()"
+		src="https://pngimg.com/uploads/futurama/futurama_PNG73.png"
+	/>
+	<!-- src="https://cdn.pixabay.com/photo/2015/06/12/18/31/cute-807306_960_720.png" -->
+</div>
+
+<div class="message-box">
+	{{ message$ | async }}
+</div>
+
+<a target="_blank" href="https://hackernoon.com/speech-recognition-and-speech-synthesis-on-angular-wj1a3ulr">Link to the article</a>
+
+<button class="activate-button" (click)="activate()">Activate</button>
