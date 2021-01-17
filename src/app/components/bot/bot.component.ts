@@ -20,6 +20,8 @@ export class BotComponent implements OnInit {
 	recognized$ = this.senseService.getType(RecognizedTextAction);
 	state$: Observable<string>;
 	message$: Observable<string>;
+	outputMsg$: string;
+	userId$: string;
 
 	micAccess$ = this.senseService.hasMicrofonAccess$;
 
@@ -41,8 +43,12 @@ export class BotComponent implements OnInit {
 				debounceTime(200),
 				tap((msg) => {
 					// msg = `you said ${msg}`;
-					this.botInteraction.sendMessge(msg).subscribe((data: any) => {
+					this.botInteraction.sendMessge(msg, this.userId$).subscribe((data: any) => {
+						if (data['userId'] != undefined) {
+							this.userId$ = data['userId'];
+						}
 						const message = data['resp'];
+						this.outputMsg$ = message;
 						this.senseService.speak(message);
 
 					})
