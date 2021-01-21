@@ -22,6 +22,7 @@ export class BotComponent implements OnInit {
 	message$: Observable<string>;
 	outputMsg$: string;
 	userId$: string;
+	updatedMsg$: string;
 
 	micAccess$ = this.senseService.hasMicrofonAccess$;
 
@@ -43,15 +44,34 @@ export class BotComponent implements OnInit {
 				debounceTime(200),
 				tap((msg) => {
 					// msg = `you said ${msg}`;
-					this.botInteraction.sendMessge(msg, this.userId$).subscribe((data: any) => {
-						if (data['userId'] != undefined) {
-							this.userId$ = data['userId'];
-						}
-						const message = data['resp'];
-						this.outputMsg$ = message;
-						this.senseService.speak(message);
+					// check on start if Master is present, if present then remove master from that msg
+					// else don't do anything
 
-					})
+					// yes please proceed also check in or condition with Master condition
+
+					// if input "bye-bye"
+					// userid set to null and close the session
+					//if()
+					this.updatedMsg$ = msg.toLowerCase();
+					if (this.updatedMsg$.includes("master")
+						|| msg === 'yes') {
+						var result = this.updatedMsg$.replace("master", '').replace("-", ' ');
+						console.log(result);
+						msg = result.trim();
+						//msg should contain master except
+						this.botInteraction.sendMessge(msg, this.userId$).subscribe((data: any) => {
+							// read user id from header 
+							if (data['userId'] != undefined) {
+								this.userId$ = data['userId'];
+							}
+							const message = data['resp'];
+							this.outputMsg$ = message;
+							this.senseService.speak(message.replaceAll("<br/>", ""));
+
+						})
+					} else {
+						console.log('command not started from master');
+					}
 				}, takeUntil(this.destroy$))
 			)
 			.subscribe();
