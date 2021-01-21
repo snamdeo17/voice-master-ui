@@ -8,10 +8,35 @@
 	{{ state$ | async }}
 </h4>
 
-<div>
-	<img [ngClass]="getImageClass()"
-		src="https://cdn2.vectorstock.com/i/thumb-large/72/11/female-cartoon-robot-vector-20707211.jpg" />
-	<!-- src="https://cdn.pixabay.com/photo/2015/06/12/18/31/cute-807306_960_720.png" -->
+<div style="height:300px;">
+	<div style="float:left;">
+		<img [ngClass]="getImageClass()"
+			src="https://cdn2.vectorstock.com/i/thumb-large/72/11/female-cartoon-robot-vector-20707211.jpg" />
+		<!-- src="https://cdn.pixabay.com/photo/2015/06/12/18/31/cute-807306_960_720.png" -->
+	</div>
+
+	<div style="float:right;">
+		<ul>
+			<b>Try following commands:</b>
+			<li>Master, Hello</li>
+			<li>Master, My code is 123</li>
+			<li>Master, Show my acccount balance</li>
+			<li>Master, Show my bills</li>
+			<li>Master, Pay my electricity bill</li>
+			<li>Master, Add 100 rupees to my account</li>
+			<li>Master, Thank you</li>
+			<li>Master, bye bye</li>
+			<b>Try adding master at the end:</b>
+			<li>Hello Master</li>
+			<li>My code is 123 Master</li>
+			<li>Show my acccount balance Master</li>
+			<li>Show my bills Master</li>
+			<li>Pay my electricity bill Master</li>
+			<li>Add 100 rupees to my account Master</li>
+			<li>bye bye Master</li>
+			<li>Thank you Master</li>
+		</ul>
+	</div>
 </div>
 
 <div class="message-box">
