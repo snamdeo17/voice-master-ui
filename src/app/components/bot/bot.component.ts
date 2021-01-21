@@ -22,7 +22,6 @@ export class BotComponent implements OnInit {
 	message$: Observable<string>;
 	outputMsg$: string;
 	userId$: string;
-	updatedMsg$: string;
 
 	micAccess$ = this.senseService.hasMicrofonAccess$;
 
@@ -31,11 +30,11 @@ export class BotComponent implements OnInit {
 
 		const speaking$ = this.senseService
 			.getType(SpeakingStarted)
-			.pipe(map(() => 'SPEAKING'));
+			.pipe(map(() => 'Speaking...'));
 
 		const listening$ = this.senseService
 			.getType(ListeningStarted)
-			.pipe(map(() => 'LISTENING'));
+			.pipe(map(() => 'Listening...'));
 
 		this.state$ = merge(speaking$, listening$);
 
@@ -52,10 +51,10 @@ export class BotComponent implements OnInit {
 					// if input "bye-bye"
 					// userid set to null and close the session
 					//if()
-					this.updatedMsg$ = msg.toLowerCase();
-					if (this.updatedMsg$.includes("master")
+					msg = msg.toLowerCase();
+					if (msg.includes("master")
 						|| msg === 'yes') {
-						var result = this.updatedMsg$.replace("master", '').replace("-", ' ');
+						var result = msg.replace("master", '').replace("-", ' ');
 						console.log(result);
 						msg = result.trim();
 						//msg should contain master except
