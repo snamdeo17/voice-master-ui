@@ -24,6 +24,7 @@
 			<li>Master, Show my bills</li>
 			<li>Master, Pay my electricity bill</li>
 			<li>Master, Add 100 rupees to my account</li>
+			<li>Master, Please show my transaction history</li>
 			<li>Master, Thank you</li>
 			<li>Master, bye bye</li>
 			<b>Try adding master at the end:</b>
@@ -46,5 +47,41 @@
 <div class="message-box">
 	<div [innerHTML]="outputMsg$"></div>
 </div>
+<div class="container" *ngIf="isShown" id="divshow">
 
+	<h1 style="background-color: green;">Transaction History</h1>
+  
+	<table mat-table> <!--class="table table-striped">-->
+  
+	  <thead>
+  
+		  <tr>
+  
+			<th>Bill Name</th>
+  
+			<th>Transaction Date</th>
+  
+			<th>Amount</th>
+  
+		  </tr>
+  
+	  </thead>
+  
+	  <tbody>
+  
+		<tr *ngFor="let historyTransaction of historyTransactions">
+  
+		  <td>{{ historyTransaction.billname }}</td>
+  
+		  <td>{{ historyTransaction.paidon }}</td>
+  
+		  <td>{{ historyTransaction.amount }}</td>
+  
+		</tr>
+  
+	  </tbody>
+  
+	</table>
+  
+  </div>
 <button class="activate-button" (click)="activate()">Activate</button>

@@ -12,7 +12,13 @@ export class BotInteractionService {
   constructor(private http: HttpServiceService) { }
 
   sendMessge(message: string, userId: string) {
+    const transaction = 'transaction';
+    const history = 'history';
+    
     let url = this.serviceUrl + "bot/message?message=" + message;
+    if(message.includes(transaction) && message.includes(history) ){
+      url = this.serviceUrl + "bot/message/transactionhistory?message=" + message;
+    }
     if (userId != undefined) {
       const headers = new HttpHeaders()
         .set('userId', '' + userId);

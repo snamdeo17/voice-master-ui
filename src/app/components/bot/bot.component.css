@@ -82,3 +82,33 @@
 	margin-top: 20px;
 	border-radius: 5px;
 }
+
+table {
+	border-collapse: collapse;
+	table-layout: auto;
+}
+ 
+thead tr {
+    height: 60px;
+}
+ 
+table, th, td {
+    border: 1px solid #000000;
+}
+ 
+td {
+    white-space: normal;
+    max-width: 100%;
+	width: 50%;
+	table-layout: auto;
+    word-break: break-all;
+    height: 60px;
+    padding: 10px;
+}
+tr:nth-child(even) {
+    background: #ccc
+}
+ 
+tr:nth-child(odd) {
+    background: #fff
+}

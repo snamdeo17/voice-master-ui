@@ -8,7 +8,14 @@ import {
 } from '../../../classes/models';
 import { SenseService } from '../../../services/sense.service';
 import { BotInteractionService } from '../../../services/bot-interaction.service';
+interface HistoryTransaction {
 
+    billname: Number;
+
+    paidon: String;
+
+    amount: String;
+}
 @Component({
 	selector: 'app-bot',
 	templateUrl: './bot.component.html',
@@ -19,6 +26,8 @@ export class BotComponent implements OnInit {
 
 	recognized$ = this.senseService.getType(RecognizedTextAction);
 	state$: Observable<string>;
+	historyTransactions: HistoryTransaction[];
+	isShown: boolean = false ; // hidden by default
 	message$: Observable<string>;
 	outputMsg$: string;
 	userId$: string;
@@ -64,8 +73,22 @@ export class BotComponent implements OnInit {
 								this.userId$ = data['userId'];
 							}
 							const message = data['resp'];
-							this.outputMsg$ = message;
-							this.senseService.speak(message.replaceAll("<br/>", ""));
+							this.isShown = false ; // hidden by default
+							this.historyTransactions = message;
+							if(message[0].billname == null){
+								this.outputMsg$ = message;
+							}
+							else{
+								this.isShown = true;
+								this.outputMsg$ = "Please find your transaction history below";
+							}
+							if(message[0].billname == null){
+								this.senseService.speak(message.replaceAll("<br/>", ""));
+							}
+							else
+							{
+								this.senseService.speak(this.outputMsg$);
+							}
 
 						})
 					} else {
