@@ -31,6 +31,8 @@ export class BotComponent implements OnInit {
 	message$: Observable<string>;
 	outputMsg$: string;
 	userId$: string;
+	accountBalance$:string;
+	isAccntBalance: boolean = false;
 
 	micAccess$ = this.senseService.hasMicrofonAccess$;
 
@@ -69,12 +71,23 @@ export class BotComponent implements OnInit {
 						//msg should contain master except
 						this.botInteraction.sendMessge(msg, this.userId$).subscribe((data: any) => {
 							// read user id from header 
-							if (data['userId'] != undefined) {
+
+							if(data['userId'] == undefined ) {
+								this.userId$ = this.userId$;
+								this.isAccntBalance = false;																
+							}
+							else if (data['userId'] == '') { //user logged out after Bye Bye
+								this.userId$ = null; 
+								this.isAccntBalance = false;									
+							}
+							else if (data['userId'] != undefined) {
 								this.userId$ = data['userId'];
+								this.isAccntBalance = true;
 							}
 							const message = data['resp'];
 							this.isShown = false ; // hidden by default
 							this.historyTransactions = message;
+							this.accountBalance$ = data['accountBalance'];
 							if(message[0].billname == null){
 								this.outputMsg$ = message;
 							}

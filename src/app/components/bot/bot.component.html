@@ -15,6 +15,10 @@
 		<!-- src="https://cdn.pixabay.com/photo/2015/06/12/18/31/cute-807306_960_720.png" -->
 	</div>
 
+	<div class="account-balance"  *ngIf="isAccntBalance">
+		Account Balance : <b>{{ accountBalance$ }} </b>
+	</div>
+
 	<div style="float:right;">
 		<ul>
 			<b>Try following commands:</b>

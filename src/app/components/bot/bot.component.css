@@ -83,6 +83,13 @@
 	border-radius: 5px;
 }
 
+.account-balance {
+	font-size: large;
+	background-color: rgba(103, 241, 85, 0.692);	
+	position: absolute;	
+	right: 500px;	
+}
+
 table {
 	border-collapse: collapse;
 	table-layout: auto;
