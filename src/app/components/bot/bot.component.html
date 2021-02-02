@@ -28,7 +28,7 @@
 			<li>Master, Show my bills</li>
 			<li>Master, Pay my electricity bill</li>
 			<li>Master, Add 100 rupees to my account</li>
-			<li>Master, Please show my transaction history</li>
+			<li>Master, Show my transaction history</li>
 			<li>Master, Thank you</li>
 			<li>Master, bye bye</li>
 			<b>Try adding master at the end:</b>
@@ -66,6 +66,7 @@
 			<th>Transaction Date</th>
   
 			<th>Amount</th>
+			<th>Transaction Type</th>
   
 		  </tr>
   
@@ -80,6 +81,8 @@
 		  <td>{{ historyTransaction.paidon }}</td>
   
 		  <td>{{ historyTransaction.amount }}</td>
+
+		  <td>{{ historyTransaction.type }}</td>
   
 		</tr>
   

@@ -14,7 +14,9 @@ interface HistoryTransaction {
 
     paidon: String;
 
-    amount: String;
+	amount: String;
+	
+	type: String;
 }
 @Component({
 	selector: 'app-bot',
