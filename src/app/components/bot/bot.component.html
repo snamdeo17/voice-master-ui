@@ -3,7 +3,7 @@
 	No microphone access! You need to give micphone access. (You may click refresh
 	button to be prompted mic access pop up)
 </div>
-
+<h1>Voice Master</h1>
 <h4>
 	{{ state$ | async }}
 </h4>
@@ -15,7 +15,7 @@
 		<!-- src="https://cdn.pixabay.com/photo/2015/06/12/18/31/cute-807306_960_720.png" -->
 	</div>
 
-	<div class="account-balance"  *ngIf="isAccntBalance">
+	<div class="account-balance" *ngIf="isAccntBalance">
 		Account Balance : <b>{{ accountBalance$ }} </b>
 	</div>
 
@@ -54,41 +54,42 @@
 <div class="container" *ngIf="isShown" id="divshow">
 
 	<h1 style="background-color: green;">Transaction History</h1>
-  
-	<table mat-table> <!--class="table table-striped">-->
-  
-	  <thead>
-  
-		  <tr>
-  
-			<th>Bill Name</th>
-  
-			<th>Transaction Date</th>
-  
-			<th>Amount</th>
-			<th>Transaction Type</th>
-  
-		  </tr>
-  
-	  </thead>
-  
-	  <tbody>
-  
-		<tr *ngFor="let historyTransaction of historyTransactions">
-  
-		  <td>{{ historyTransaction.billname }}</td>
-  
-		  <td>{{ historyTransaction.paidon }}</td>
-  
-		  <td>{{ historyTransaction.amount }}</td>
 
-		  <td>{{ historyTransaction.type }}</td>
-  
-		</tr>
-  
-	  </tbody>
-  
+	<table mat-table>
+		<!--class="table table-striped">-->
+
+		<thead>
+
+			<tr>
+
+				<th>Bill Name</th>
+
+				<th>Transaction Date</th>
+
+				<th>Amount</th>
+				<th>Transaction Type</th>
+
+			</tr>
+
+		</thead>
+
+		<tbody>
+
+			<tr *ngFor="let historyTransaction of historyTransactions">
+
+				<td>{{ historyTransaction.billname }}</td>
+
+				<td>{{ historyTransaction.paidon }}</td>
+
+				<td>{{ historyTransaction.amount }}</td>
+
+				<td>{{ historyTransaction.type }}</td>
+
+			</tr>
+
+		</tbody>
+
 	</table>
-  
-  </div>
+
+</div>
 <button class="activate-button" (click)="activate()">Activate</button>

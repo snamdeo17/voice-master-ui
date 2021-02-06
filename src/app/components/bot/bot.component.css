@@ -5,6 +5,8 @@
 	font-weight: bold;
 }
 
+h1 {text-align: center;}
+
 .activate-button {
 	position: absolute;
 	bottom: 10px;
