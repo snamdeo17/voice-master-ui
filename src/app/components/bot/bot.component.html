@@ -92,4 +92,26 @@
 	</table>
 
 </div>
+
+<div class="container" *ngIf="isBillPending" id="showBills">
+
+	<h1 style="background-color: green;">Pending Bills</h1>
+
+	<table mat-table>
+		<thead>
+			<tr>
+				<th>Bill Name</th>
+				<th>Amount</th>
+				<th>Due Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let pendingBill of pendingBills">
+				<td>{{ pendingBill.pendingBillName }}</td>
+				<td>{{ pendingBill.billAmount }}</td>
+				<td>{{ pendingBill.billDueDate }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 <button class="activate-button" (click)="activate()">Activate</button>

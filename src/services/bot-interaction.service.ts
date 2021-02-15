@@ -19,6 +19,9 @@ export class BotInteractionService {
     if(message.includes(transaction) && message.includes(history) ){
       url = this.serviceUrl + "bot/message/transactionhistory?message=" + message;
     }
+    if(message.includes('show') && message.includes('my') && message.includes('bills')){
+      url = this.serviceUrl + "bot/message/pendingbill?message=" + message;
+    }
     if (userId != undefined) {
       const headers = new HttpHeaders()
         .set('userId', '' + userId);

@@ -18,6 +18,13 @@ interface HistoryTransaction {
 	
 	type: String;
 }
+interface PendingBills {
+
+	pendingBillName: String;
+	billAmount: String ;
+	billDueDate: String;
+}
+
 @Component({
 	selector: 'app-bot',
 	templateUrl: './bot.component.html',
@@ -38,6 +45,8 @@ export class BotComponent implements OnInit {
 	subscription: Subscription;
 	defaultAlertInput: string = 'show my bills';
 
+	isBillPending: boolean = false;
+	pendingBills: PendingBills[];
 	micAccess$ = this.senseService.hasMicrofonAccess$;
 
 	constructor(private senseService: SenseService, private botInteraction: BotInteractionService) {
@@ -89,21 +98,40 @@ export class BotComponent implements OnInit {
 								this.isAccntBalance = true;
 							}
 							const message = data['resp'];
+							
+							const pendingBillPresent = data['pendingBill'];
+							
+							this.isBillPending = false;
+							this.pendingBills = message;
+							
 							this.isShown = false ; // hidden by default
 							this.historyTransactions = message;
 							this.accountBalance$ = data['accountBalance'];
-							if(message[0].billname == null){
+							if(message[0].pendingBillName == null && message[0].billname == null){
+								//console.log('both null');
 								this.outputMsg$ = message;
+							}else if(pendingBillPresent != null){
+								//console.log("inside else");
+								this.isBillPending = true;
+								this.outputMsg$ = "Please find list of pending bills below";
 							}
-							else{
+							else if(message[0].billname != null){
 								this.isShown = true;
 								this.outputMsg$ = "Please find your transaction history below";
 							}
-							if(message[0].billname == null){
-								this.senseService.speak(message.replaceAll("<br/>", ""));
+						
+							
+							if(message[0].billname == null && pendingBillPresent == null){
+								//console.log('line 127');
+								this.senseService.speak(message);
+							}
+							else if(message[0].pendingBillName != null){
+								//console.log('line 130');
+								this.senseService.speak(pendingBillPresent);
 							}
 							else
 							{
+								//console.log("else:"+this.outputMsg$);
 								this.senseService.speak(this.outputMsg$);
 							}
 
