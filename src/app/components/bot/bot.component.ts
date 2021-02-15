@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { merge, Observable, Subject } from 'rxjs';
-import { map, tap, debounceTime, takeUntil } from 'rxjs/operators';
+import { merge, Observable, Subject, Subscription, timer  } from 'rxjs';
+import { map, tap, debounceTime, takeUntil, switchMap } from 'rxjs/operators';
 import {
 	ListeningStarted,
 	SpeakingStarted,
@@ -35,6 +35,8 @@ export class BotComponent implements OnInit {
 	userId$: string;
 	accountBalance$:string;
 	isAccntBalance: boolean = false;
+	subscription: Subscription;
+	defaultAlertInput: string = 'show my bills';
 
 	micAccess$ = this.senseService.hasMicrofonAccess$;
 
@@ -120,14 +122,35 @@ export class BotComponent implements OnInit {
 		};
 	}
 
-	ngOnInit() { }
+	ngOnInit() {
+		this.getAlertForPendingBill();
+	 }
 
 	ngOnDestroy() {
+		this.subscription.unsubscribe();
 		this.destroy$.next();
-		this.destroy$.complete();
+		this.destroy$.complete();		
 	}
 
 	activate() {
 		this.senseService.activate();
+	}
+	
+	getAlertForPendingBill() {
+			this.subscription = timer(60*1000, 10*60*1000).pipe(
+				switchMap(() => this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$))
+			  ).subscribe((data: any) => {				
+				const message = data['resp'];
+				if (data['userId'] != undefined) {
+					this.userId$ = data['userId'];
+					this.isAccntBalance = true;
+					if(message[0].billname == null && !message.includes("no bill")){
+						this.outputMsg$ = message;
+						this.senseService.speak(message.replaceAll("<br/>", ""));
+					}
+				} else {
+					  console.log('User is not logged in');
+				}
+			  });
 	}
 }
