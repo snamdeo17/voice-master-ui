@@ -11,13 +11,11 @@ import { BotInteractionService } from '../../../services/bot-interaction.service
 interface HistoryTransaction {
 
     billname: Number;
-
     paidon: String;
-
-	amount: String;
-	
+	amount: String;	
 	type: String;
 }
+
 interface PendingBills {
 
 	pendingBillName: String;
@@ -107,31 +105,25 @@ export class BotComponent implements OnInit {
 							this.isShown = false ; // hidden by default
 							this.historyTransactions = message;
 							this.accountBalance$ = data['accountBalance'];
-							if(message[0].pendingBillName == null && message[0].billname == null){
-								//console.log('both null');
+
+							if(message[0].pendingBillName == null && message[0].billname == null){								
 								this.outputMsg$ = message;
-							}else if(pendingBillPresent != null){
-								//console.log("inside else");
+							}else if(pendingBillPresent != null){								
 								this.isBillPending = true;
 								this.outputMsg$ = "Please find list of pending bills below";
 							}
 							else if(message[0].billname != null){
 								this.isShown = true;
 								this.outputMsg$ = "Please find your transaction history below";
-							}
-						
+							}						
 							
-							if(message[0].billname == null && pendingBillPresent == null){
-								//console.log('line 127');
+							if(message[0].billname == null && pendingBillPresent == null){								
 								this.senseService.speak(message);
 							}
-							else if(message[0].pendingBillName != null){
-								//console.log('line 130');
+							else if(message[0].pendingBillName != null){								
 								this.senseService.speak(pendingBillPresent);
 							}
-							else
-							{
-								//console.log("else:"+this.outputMsg$);
+							else {								
 								this.senseService.speak(this.outputMsg$);
 							}
 
@@ -169,12 +161,16 @@ export class BotComponent implements OnInit {
 				switchMap(() => this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$))
 			  ).subscribe((data: any) => {				
 				const message = data['resp'];
+				const MessageToSpeakOut = data['pendingBill'];
+				
 				if (data['userId'] != undefined) {
 					this.userId$ = data['userId'];
 					this.isAccntBalance = true;
-					if(message[0].billname == null && !message.includes("no bill")){
-						this.outputMsg$ = message;
-						this.senseService.speak(message.replaceAll("<br/>", ""));
+					if(message[0].billname == null && !message.includes("no bill")){						
+						this.outputMsg$ = "Please see below list of pending bills.";
+						this.isBillPending = true;
+						this.pendingBills = message;						
+						this.senseService.speak(MessageToSpeakOut);
 					}
 				} else {
 					  console.log('User is not logged in');
