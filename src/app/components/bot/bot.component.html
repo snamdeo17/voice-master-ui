@@ -1,117 +1,120 @@
+<app-register></app-register>
 <app-settings></app-settings>
+
 <div class="alert" *ngIf="!(micAccess$ | async)">
-	No microphone access! You need to give micphone access. (You may click refresh
-	button to be prompted mic access pop up)
-</div>
-<h1>Voice Master</h1>
-<h4>
-	{{ state$ | async }}
-</h4>
-
-<div style="height:300px;">
-	<div style="float:left;">
-		<img [ngClass]="getImageClass()"
-			src="https://cdn2.vectorstock.com/i/thumb-large/72/11/female-cartoon-robot-vector-20707211.jpg" />
-		<!-- src="https://cdn.pixabay.com/photo/2015/06/12/18/31/cute-807306_960_720.png" -->
-	</div>
-
-	<div class="account-balance" *ngIf="isAccntBalance">
-		Account Balance : <b>{{ accountBalance$ }} </b>
-	</div>
-
-	<div style="float:right;">
-		<ul>
-			<b>Try following commands:</b>
-			<li>Master, Hello</li>
-			<li>Master, My code is 123</li>
-			<li>Master, Show my acccount balance</li>
-			<li>Master, Show my bills</li>
-			<li>Master, Pay my electricity bill</li>
-			<!--li>Master, Add 100 rupees to my account</li-->
-			<li>Master, Show my transaction history</li>
-			<li>Master, Thank you</li>
-			<li>Master, bye bye</li>
-			<b>Try adding master at the end:</b>
-			<li>Hello Master</li>
-			<li>My code is 123 Master</li>
-			<li>Show my acccount balance Master</li>
-			<li>Show my bills Master</li>
-			<li>Pay my electricity bill Master</li>
-			<!-- li>Add 100 rupees to my account Master</li-->
-			<li>bye bye Master</li>
-			<li>Thank you Master</li>
-		</ul>
-	</div>
+    No microphone access! You need to give micphone access. (You may click refresh button to be prompted mic access pop up)
 </div>
 
-<div class="message-box">
-	Input: {{ message$ | async }}
+<div class="container" *ngIf="!isRegisterOpen">
+    <h1>Voice Master</h1>
+    <h4>
+        {{ state$ | async }}
+    </h4>
+    <div style="height:300px;">
+        <div style="float:left;">
+            <img [ngClass]="getImageClass()" src="https://cdn2.vectorstock.com/i/thumb-large/72/11/female-cartoon-robot-vector-20707211.jpg" />
+            <!-- src="https://cdn.pixabay.com/photo/2015/06/12/18/31/cute-807306_960_720.png" -->
+        </div>
+
+        <div class="account-balance" *ngIf="isAccntBalance">
+            Account Balance : <b>{{ accountBalance$ }} </b>
+        </div>
+
+        <div style="float:right;">
+            <ul>
+                <b>Try following commands:</b>
+                <li>Master, Hello</li>
+                <li>Master, My code is 123</li>
+                <li>Master, Show my acccount balance</li>
+                <li>Master, Show my bills</li>
+                <li>Master, Pay my electricity bill</li>
+                <!--li>Master, Add 100 rupees to my account</li-->
+                <li>Master, Show my transaction history</li>
+                <li>Master, Thank you</li>
+                <li>Master, bye bye</li>
+                <b>Try adding master at the end:</b>
+                <li>Hello Master</li>
+                <li>My code is 123 Master</li>
+                <li>Show my acccount balance Master</li>
+                <li>Show my bills Master</li>
+                <li>Pay my electricity bill Master</li>
+                <!-- li>Add 100 rupees to my account Master</li-->
+                <li>bye bye Master</li>
+                <li>Thank you Master</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="message-box">
+        Input: {{ message$ | async }}
+    </div>
+
+    <div class="message-box">
+        <div [innerHTML]="outputMsg$"></div>
+    </div>
+    <div class="container" *ngIf="isShown" id="divshow">
+
+        <h1 style="background-color: green;">Transaction History</h1>
+
+        <table mat-table>
+            <!--class="table table-striped">-->
+
+            <thead>
+
+                <tr>
+
+                    <th>Bill Name</th>
+
+                    <th>Transaction Date</th>
+
+                    <th>Amount</th>
+                    <th>Transaction Type</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let historyTransaction of historyTransactions">
+
+                    <td>{{ historyTransaction.billname }}</td>
+
+                    <td>{{ historyTransaction.paidon }}</td>
+
+                    <td>{{ historyTransaction.amount }}</td>
+
+                    <td>{{ historyTransaction.type }}</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="container" *ngIf="isBillPending" id="showBills">
+
+        <h1 style="background-color: green;">Pending Bills</h1>
+
+        <table mat-table>
+            <thead>
+                <tr>
+                    <th>Bill Name</th>
+                    <th>Amount</th>
+                    <th>Due Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pendingBill of pendingBills">
+                    <td>{{ pendingBill.pendingBillName }}</td>
+                    <td>{{ pendingBill.billAmount }}</td>
+                    <td>{{ pendingBill.billDueDate }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <button class="activate-button" (click)="activate()">Activate</button>
+
 </div>
-
-<div class="message-box">
-	<div [innerHTML]="outputMsg$"></div>
-</div>
-<div class="container" *ngIf="isShown" id="divshow">
-
-	<h1 style="background-color: green;">Transaction History</h1>
-
-	<table mat-table>
-		<!--class="table table-striped">-->
-
-		<thead>
-
-			<tr>
-
-				<th>Bill Name</th>
-
-				<th>Transaction Date</th>
-
-				<th>Amount</th>
-				<th>Transaction Type</th>
-
-			</tr>
-
-		</thead>
-
-		<tbody>
-
-			<tr *ngFor="let historyTransaction of historyTransactions">
-
-				<td>{{ historyTransaction.billname }}</td>
-
-				<td>{{ historyTransaction.paidon }}</td>
-
-				<td>{{ historyTransaction.amount }}</td>
-
-				<td>{{ historyTransaction.type }}</td>
-
-			</tr>
-
-		</tbody>
-
-	</table>
-
-</div>
-
-<div class="container" *ngIf="isBillPending" id="showBills">
-
-	<h1 style="background-color: green;">Pending Bills</h1>
-
-	<table mat-table>
-		<thead>
-			<tr>
-				<th>Bill Name</th>
-				<th>Amount</th>
-				<th>Due Date</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let pendingBill of pendingBills">
-				<td>{{ pendingBill.pendingBillName }}</td>
-				<td>{{ pendingBill.billAmount }}</td>
-				<td>{{ pendingBill.billDueDate }}</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-<button class="activate-button" (click)="activate()">Activate</button>

@@ -8,9 +8,10 @@ import { BotComponent } from './components/bot/bot.component';
 import { HttpServiceService } from 'src/services/http.service';
 import { BotInteractionService } from 'src/services/bot-interaction.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
-  declarations: [AppComponent, SettingsComponent, BotComponent],
+  declarations: [AppComponent, SettingsComponent, BotComponent, RegisterComponent],
   providers: [HttpServiceService, BotInteractionService],
   imports: [BrowserModule, FormsModule, HttpClientModule],
   bootstrap: [AppComponent],

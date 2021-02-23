@@ -1,0 +1,37 @@
+.container {
+    margin-top: 30px;
+}
+
+input.ng-invalid.ng-touched {
+    border: 1px solid red;
+}
+
+.register-button {
+    position: absolute;
+    top: 10px;
+    right: 100px;
+}
+
+#cancel {
+    position: absolute;
+    top: 300px;
+    right: 10px;
+}
+
+#register {
+    position: absolute;
+    top: 300px;
+    right: 100px;
+}
+
+#start-record {
+    position: absolute;
+    top: 5px;
+    left: -1px;
+}
+
+#stop-record {
+    position: absolute;
+    top: 5px;
+    left: -1px;
+}
