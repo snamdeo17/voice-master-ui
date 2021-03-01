@@ -9,6 +9,8 @@ import {
 import { SenseService } from "../../../services/sense.service";
 import { BotInteractionService } from "../../../services/bot-interaction.service";
 import { CustomerService } from "../../../services/customer.service";
+import { RecordRTCService } from "../../../services/record.service";
+import { RegisterComponent } from '../register/register.component';
 
 interface HistoryTransaction {
   billname: Number;
@@ -45,7 +47,7 @@ export class BotComponent implements OnInit {
   isAccntBalance: boolean = false;
   subscription: Subscription;
   defaultAlertInput: string = "show my bills";
-
+  blobUrl = this.recordRTCService?.blobUrl;
   isBillPending: boolean = false;
   pendingBills: PendingBills[];
   micAccess$ = this.senseService.hasMicrofonAccess$;
@@ -53,7 +55,9 @@ export class BotComponent implements OnInit {
   constructor(
     private senseService: SenseService,
     private botInteraction: BotInteractionService,
-    private customerService: CustomerService
+    public recordRTCService: RecordRTCService,
+    private customerService: CustomerService,
+    public registerComponent: RegisterComponent,
   ) {
     
 	this.register$ = this.customerService.isRegisterOpen$.subscribe(
@@ -93,6 +97,7 @@ export class BotComponent implements OnInit {
             console.log(result);
             msg = result.trim();
             //msg should contain master except
+
             this.botInteraction
               .sendMessge(msg, this.userId$)
               .subscribe((data: any) => {
@@ -110,7 +115,6 @@ export class BotComponent implements OnInit {
                   this.isAccntBalance = true;
                 }
                 const message = data["resp"];
-
                 const pendingBillPresent = data["pendingBill"];
 
                 this.isBillPending = false;
@@ -137,7 +141,12 @@ export class BotComponent implements OnInit {
 
                 if (message[0].billname == null && pendingBillPresent == null) {
                   //console.log('line 127');
+                  
                   this.senseService.speak(message);
+                  if(message.includes("Thank you"))
+                  {
+                    this.compareVoice();
+                  }
                 } else if (message[0].pendingBillName != null) {
                   //console.log('line 130');
                   this.senseService.speak(pendingBillPresent);
@@ -154,10 +163,24 @@ export class BotComponent implements OnInit {
       .subscribe();
   }
 
+private delay(ms: number)
+{
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
   getImageClass() {
     return {
       image: true,
     };
+  }
+
+  private async compareVoice()
+  {
+    await this.delay(6000);
+    this.registerComponent.startRecordingForAuth(this.userId$);
+    console.log('before delay');
+    await this.delay(10000);
+    console.log('after delay');
+    this.registerComponent.stopRecordingForAuth(this.userId$);
   }
 
   ngOnInit() {

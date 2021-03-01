@@ -36,7 +36,7 @@
                         Please enter a valid last secret!
                     </p>
                 </div>
-                <button id="register" [disabled]="voiceSamples.length === 0? true : false" type="submit" class="btn btn-primary">
+                <button id="register"  type="submit" class="btn btn-primary">
                     Register
                 </button>
                 <button id="cancel" type="button" class="btn btn-primary" (click)="onCancel()">
@@ -52,9 +52,9 @@
                             Stop Recording
                         </button>
                         <p style="font-family: monospace">{{ recordTimer }}</p>
-                        <!-- <ng-template [ngIf]="blobUrl">
+                         <ng-template [ngIf]="blobUrl">
                         <audio [src]="blobUrl" controls></audio>
-                    </ng-template> -->
+                    </ng-template> 
                         <p *ngFor=" let sample of voiceSamples "> {{sample}}</p>
                         <ng-template id="samples " *ngFor="let voice of voiceSamples; let i=index ">
                             <p> voiceSamples :: {{ voice }}</p>

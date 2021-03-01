@@ -97,15 +97,27 @@ export class RegisterComponent implements OnInit {
     );
   }
 
+  startRecordingForAuth(user: string) {
+    this.isRecording = true;
+    this.recordRTCService.toggleRecordForAuth(user);
+    console.log("Recording Started.");
+  }
+
+  stopRecordingForAuth(user: string) {
+    this.isRecording = false;
+    this.recordRTCService.toggleRecordForAuth(user);
+    console.log("Recording Stopped.");
+  }
+
   startRecording() {
     this.isRecording = true;
-    this.recordRTCService.toggleRecord();
+    this.recordRTCService.toggleRecord(this.user.email);
     console.log("Recording Started.");
   }
 
   stopRecording() {
     this.isRecording = false;
-    this.recordRTCService.toggleRecord();
+    this.recordRTCService.toggleRecord(this.user.email);
     console.log("Recording Stopped.");
   }
 
