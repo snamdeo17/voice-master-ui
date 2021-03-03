@@ -12,6 +12,7 @@ import { CustomerService } from "../../../services/customer.service";
 import { RecordRTCService } from "../../../services/record.service";
 import { RegisterComponent } from '../register/register.component';
 
+
 interface HistoryTransaction {
   billname: Number;
 
@@ -175,12 +176,14 @@ private delay(ms: number)
 
   private async compareVoice()
   {
-    await this.delay(6000);
+    await this.delay(5500);
     this.registerComponent.startRecordingForAuth(this.userId$);
     console.log('before delay');
     await this.delay(10000);
     console.log('after delay');
     this.registerComponent.stopRecordingForAuth(this.userId$);
+    await this.delay(5500);
+    this.outputMsg$ = this.recordRTCService.voiceAuthResponse;
   }
 
   ngOnInit() {

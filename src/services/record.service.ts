@@ -4,7 +4,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 
 import { Observable, from, of, Subscription } from "rxjs";
 import { catchError, map } from "rxjs/operators";
-
+import { SenseService } from "./sense.service";
+//import { BotComponent } from '../../components/bot/bot.component';
 import {
   HttpErrorResponse,
   HttpHeaders,
@@ -20,6 +21,7 @@ export class RecordRTCService {
   blobUrl: any;
   interval;
   recordingTimer: string;
+  voiceAuthResponse: string;
   recordWebRTC: any;
   mediaRecordStream: any;
   subscription: Subscription;
@@ -35,6 +37,7 @@ export class RecordRTCService {
 
   constructor(
     private sanitizer: DomSanitizer,
+    private senseService: SenseService,
     private http: HttpServiceService
   ) {}
 
@@ -100,9 +103,16 @@ export class RecordRTCService {
               // if(event.type === HttpEventType.Response)
               //   return event;
               console.log(event);
+              console.log('event.description'+event.description);
+              this.senseService.speak(event.description);
+              this.voiceAuthResponse = event.description;
+              return event.description;
+              
             }),
           catchError((error: HttpErrorResponse) => {
-            return of(`Authentication failed : ${error}`);
+            this.senseService.speak(error.error.description);
+            this.voiceAuthResponse = error.error.description;
+            return of(`VoiceAuthentication failed : ${error}`);
           })
         )
         .subscribe((event: any) => {
