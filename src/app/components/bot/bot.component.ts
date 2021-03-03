@@ -182,8 +182,11 @@ private delay(ms: number)
     await this.delay(10000);
     console.log('after delay');
     this.registerComponent.stopRecordingForAuth(this.userId$);
-    await this.delay(5500);
-    this.outputMsg$ = this.recordRTCService.voiceAuthResponse;
+    //await this.delay(5500);
+    //this.outputMsg$ = this.recordRTCService.voiceAuthResponse;
+    this.recordRTCService.userVoiceObs.subscribe((voiceAuthRes) => {
+      this.outputMsg$ = voiceAuthRes;
+  })
   }
 
   ngOnInit() {

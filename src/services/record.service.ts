@@ -2,10 +2,9 @@ import { Injectable } from "@angular/core";
 import * as RecordRTC from "recordrtc";
 import { DomSanitizer } from "@angular/platform-browser";
 
-import { Observable, from, of, Subscription } from "rxjs";
+import { Observable, from, of, Subscription, Subject } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 import { SenseService } from "./sense.service";
-//import { BotComponent } from '../../components/bot/bot.component';
 import {
   HttpErrorResponse,
   HttpHeaders,
@@ -21,11 +20,12 @@ export class RecordRTCService {
   blobUrl: any;
   interval;
   recordingTimer: string;
-  voiceAuthResponse: string;
+  //voiceAuthResponse: string;
   recordWebRTC: any;
   mediaRecordStream: any;
   subscription: Subscription;
- 
+  voiceAuthRes: Subject<any> = new Subject<any>(); 
+  public userVoiceObs = this.voiceAuthRes.asObservable();
 
   options: any = {
     type: "audio",
@@ -105,13 +105,15 @@ export class RecordRTCService {
               console.log(event);
               console.log('event.description'+event.description);
               this.senseService.speak(event.description);
-              this.voiceAuthResponse = event.description;
+              //this.voiceAuthResponse = event.description;
+              this.voiceAuthRes.next(event.description);
               return event.description;
               
             }),
           catchError((error: HttpErrorResponse) => {
             this.senseService.speak(error.error.description);
-            this.voiceAuthResponse = error.error.description;
+            //this.voiceAuthResponse = error.error.description;
+            this.voiceAuthRes.next(error.error.description);
             return of(`VoiceAuthentication failed : ${error}`);
           })
         )
