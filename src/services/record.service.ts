@@ -21,6 +21,8 @@ export class RecordRTCService {
   interval;
   recordingTimer: string;
   //voiceAuthResponse: string;
+  isVoiceAuthenticated: Subject<boolean> = new Subject<boolean>(); 
+  public isVoiceAuthenticatedObs = this.isVoiceAuthenticated.asObservable();
   recordWebRTC: any;
   mediaRecordStream: any;
   subscription: Subscription;
@@ -107,6 +109,7 @@ export class RecordRTCService {
               this.senseService.speak(event.description);
               //this.voiceAuthResponse = event.description;
               this.voiceAuthRes.next(event.description);
+              this.isVoiceAuthenticated.next(true);
               return event.description;
               
             }),
@@ -114,6 +117,7 @@ export class RecordRTCService {
             this.senseService.speak(error.error.description);
             //this.voiceAuthResponse = error.error.description;
             this.voiceAuthRes.next(error.error.description);
+            this.isVoiceAuthenticated.next(false);
             return of(`VoiceAuthentication failed : ${error}`);
           })
         )

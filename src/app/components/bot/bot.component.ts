@@ -43,6 +43,7 @@ export class BotComponent implements OnInit {
   isShown: boolean = false; // hidden by default
   message$: Observable<string>;
   outputMsg$: string;
+  isVoiceAuthenticated$: boolean;
   userId$: string;
   accountBalance$: string;
   isAccntBalance: boolean = false;
@@ -187,6 +188,10 @@ private delay(ms: number)
     this.recordRTCService.userVoiceObs.subscribe((voiceAuthRes) => {
       this.outputMsg$ = voiceAuthRes;
   })
+  this.recordRTCService.isVoiceAuthenticatedObs.subscribe((isVoiceAuthenticated) => {
+    this.isVoiceAuthenticated$ = isVoiceAuthenticated;
+    console.log('isVoiceAuthenticated$'+this.isVoiceAuthenticated$);
+})
   }
 
   ngOnInit() {
