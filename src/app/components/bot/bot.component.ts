@@ -53,6 +53,7 @@ export class BotComponent implements OnInit {
   isBillPending: boolean = false;
   pendingBills: PendingBills[];
   micAccess$ = this.senseService.hasMicrofonAccess$;
+  counterRetry: number = 2;
 
   constructor(
     private senseService: SenseService,
@@ -61,12 +62,12 @@ export class BotComponent implements OnInit {
     private customerService: CustomerService,
     public registerComponent: RegisterComponent,
   ) {
-    
-	this.register$ = this.customerService.isRegisterOpen$.subscribe(
-      (isRegisterOpen: boolean) => {
-		this.isRegisterOpen = isRegisterOpen;
 
-	  }
+    this.register$ = this.customerService.isRegisterOpen$.subscribe(
+      (isRegisterOpen: boolean) => {
+        this.isRegisterOpen = isRegisterOpen;
+
+      }
     );
     this.message$ = this.recognized$.pipe(tap(console.log));
 
@@ -143,10 +144,9 @@ export class BotComponent implements OnInit {
 
                 if (message[0].billname == null && pendingBillPresent == null) {
                   //console.log('line 127');
-                  
+
                   this.senseService.speak(message);
-                  if(message.includes("Thank you"))
-                  {
+                  if (message.includes("Thank you")) {
                     this.compareVoice();
                   }
                 } else if (message[0].pendingBillName != null) {
@@ -165,18 +165,17 @@ export class BotComponent implements OnInit {
       .subscribe();
   }
 
-private delay(ms: number)
-{
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+  private delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   getImageClass() {
     return {
       image: true,
     };
   }
 
-  private async compareVoice()
-  {
+  public async compareVoice() {
+    let alreadyCalled = false;
     await this.delay(5500);
     this.registerComponent.startRecordingForAuth(this.userId$);
     console.log('before delay');
@@ -187,11 +186,17 @@ private delay(ms: number)
     //this.outputMsg$ = this.recordRTCService.voiceAuthResponse;
     this.recordRTCService.userVoiceObs.subscribe((voiceAuthRes) => {
       this.outputMsg$ = voiceAuthRes;
-  })
-  this.recordRTCService.isVoiceAuthenticatedObs.subscribe((isVoiceAuthenticated) => {
-    this.isVoiceAuthenticated$ = isVoiceAuthenticated;
-    console.log('isVoiceAuthenticated$'+this.isVoiceAuthenticated$);
-})
+
+      if (!this.isVoiceAuthenticated$ && this.recordRTCService.counterRetry > 0 && !alreadyCalled) {
+        // this.senseService.speak(voiceAuthRes);
+        alreadyCalled = true;
+        this.compareVoice();
+      }
+    })
+    this.recordRTCService.isVoiceAuthenticatedObs.subscribe((isVoiceAuthenticated) => {
+      this.isVoiceAuthenticated$ = isVoiceAuthenticated;
+      console.log('isVoiceAuthenticated$' + this.isVoiceAuthenticated$);
+    })
   }
 
   ngOnInit() {
@@ -200,7 +205,7 @@ private delay(ms: number)
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-	this.register$.unsubscribe();
+    this.register$.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -213,7 +218,7 @@ private delay(ms: number)
     this.subscription = timer(60 * 1000, 10 * 60 * 1000)
       .pipe(
         switchMap(() =>
-          this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$,this.isVoiceAuthenticated$)
+          this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$, this.isVoiceAuthenticated$)
         )
       )
       .subscribe((data: any) => {

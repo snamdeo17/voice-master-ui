@@ -21,13 +21,14 @@ export class RecordRTCService {
   interval;
   recordingTimer: string;
   //voiceAuthResponse: string;
-  isVoiceAuthenticated: Subject<boolean> = new Subject<boolean>(); 
+  isVoiceAuthenticated: Subject<boolean> = new Subject<boolean>();
   public isVoiceAuthenticatedObs = this.isVoiceAuthenticated.asObservable();
   recordWebRTC: any;
   mediaRecordStream: any;
   subscription: Subscription;
-  voiceAuthRes: Subject<any> = new Subject<any>(); 
+  voiceAuthRes: Subject<any> = new Subject<any>();
   public userVoiceObs = this.voiceAuthRes.asObservable();
+  counterRetry: number = 2;
 
   options: any = {
     type: "audio",
@@ -41,7 +42,7 @@ export class RecordRTCService {
     private sanitizer: DomSanitizer,
     private senseService: SenseService,
     private http: HttpServiceService
-  ) {}
+  ) { }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -51,7 +52,7 @@ export class RecordRTCService {
     if (this.recordingTimer) {
       this.stopRTC(email);
       //  this.stopRTCToCompareVoice();
-    }else {
+    } else {
       this.subscription = from(
         navigator.mediaDevices.getUserMedia({ audio: true })
       ).subscribe(
@@ -71,7 +72,7 @@ export class RecordRTCService {
     if (this.recordingTimer) {
       //this.stopRTC();
       this.stopRTCToCompareVoice(userId);
-    }else {
+    } else {
       this.subscription = from(
         navigator.mediaDevices.getUserMedia({ audio: true })
       ).subscribe(
@@ -102,22 +103,32 @@ export class RecordRTCService {
       this.authenticateUserVoice(blob, userId)
         .pipe(
           map(event => {
-              // if(event.type === HttpEventType.Response)
-              //   return event;
-              console.log(event);
-              console.log('event.description'+event.description);
-              this.senseService.speak(event.description);
-              //this.voiceAuthResponse = event.description;
-              this.voiceAuthRes.next(event.description);
-              this.isVoiceAuthenticated.next(true);
-              return event.description;
-              
-            }),
+            // if(event.type === HttpEventType.Response)
+            //   return event;
+            console.log(event);
+            console.log('event.description' + event.description);
+            this.counterRetry = 0;
+            this.senseService.speak(event.description);
+            //this.voiceAuthResponse = event.description;
+            this.voiceAuthRes.next(event.description);
+            this.isVoiceAuthenticated.next(true);
+            return event.description;
+
+          }),
           catchError((error: HttpErrorResponse) => {
-            this.senseService.speak(error.error.description);
+            let errMsg = error.error.description;
+            if (this.counterRetry > 0) {
+              errMsg = errMsg + '. Kindly retry. Please speak couple of sentences for next 10 seconds to authenticate your voice'
+              // this.senseService.speak(errMsg);
+            } else {
+              errMsg = errMsg + ". Kindly authenticate yourself to start. Please Provide your secret code";
+              // this.senseService.speak(errMsg);
+            }
             //this.voiceAuthResponse = error.error.description;
-            this.voiceAuthRes.next(error.error.description);
+            this.senseService.speak(errMsg);
+            this.voiceAuthRes.next(errMsg);
             this.isVoiceAuthenticated.next(false);
+            this.counterRetry = this.counterRetry - 1;
             return of(`VoiceAuthentication failed : ${error}`);
           })
         )
@@ -139,10 +150,10 @@ export class RecordRTCService {
       this.saveFileToServer(blob, email)
         .pipe(
           map(event => {
-              // if(event.type === HttpEventType.Response)
-              //   return event;
-              console.log(event);
-            }),
+            // if(event.type === HttpEventType.Response)
+            //   return event;
+            console.log(event);
+          }),
           catchError((error: HttpErrorResponse) => {
             return of(`Upload failed : ${error}`);
           })
@@ -157,12 +168,12 @@ export class RecordRTCService {
       );
     });
   }
-  
+
   saveFileToServer(blob: any, email: string): Observable<any> {
     let uploadUrl = this.serviceUrl + "user/uploadnewvoice";
     const formData = new FormData();
     formData.append("file", blob, "sample.wav");
-    formData.append("email",""+email);
+    formData.append("email", "" + email);
 
     if (email != undefined) {
       const headers = new HttpHeaders().set("email", "" + email);
@@ -176,7 +187,7 @@ export class RecordRTCService {
     let uploadUrl = this.serviceUrl + "/user/authenticatevoice";
     const formData = new FormData();
     formData.append("file", blob, "sample.wav");
-    formData.append("userId",userId);
+    formData.append("userId", userId);
 
     if (userId != undefined) {
       const headers = new HttpHeaders().set("userId", "" + userId);
@@ -206,13 +217,12 @@ export class RecordRTCService {
     this.interval = setInterval(() => {
       console.log(this.recordingTimer);
       let timer: any = this.recordingTimer;
-      if(timer != null)
-      {
+      if (timer != null) {
         timer = timer.split(":");
 
         let minutes = +timer[0];
         let seconds = +timer[1];
-  
+
         if (minutes == 1) {
           this.recordWebRTC.stopRecording();
           clearInterval(this.interval);
@@ -223,14 +233,14 @@ export class RecordRTCService {
           ++minutes;
           seconds = 0;
         }
-  
+
         if (seconds < 10) {
           this.recordingTimer = `0${minutes}:0${seconds}`;
         } else {
           this.recordingTimer = `0${minutes}:${seconds}`;
         }
       }
- 
+
     }, 1000);
   }
 
