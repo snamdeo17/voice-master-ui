@@ -43,7 +43,7 @@ export class BotComponent implements OnInit {
   isShown: boolean = false; // hidden by default
   message$: Observable<string>;
   outputMsg$: string;
-  isVoiceAuthenticated$: boolean;
+  isVoiceAuthenticated$: boolean = false;
   userId$: string;
   accountBalance$: string;
   isAccntBalance: boolean = false;
@@ -101,7 +101,7 @@ export class BotComponent implements OnInit {
             //msg should contain master except
 
             this.botInteraction
-              .sendMessge(msg, this.userId$)
+              .sendMessge(msg, this.userId$, this.isVoiceAuthenticated$)
               .subscribe((data: any) => {
                 // read user id from header
 
@@ -213,7 +213,7 @@ private delay(ms: number)
     this.subscription = timer(60 * 1000, 10 * 60 * 1000)
       .pipe(
         switchMap(() =>
-          this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$)
+          this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$,this.isVoiceAuthenticated$)
         )
       )
       .subscribe((data: any) => {

@@ -11,7 +11,7 @@ export class BotInteractionService {
   serviceUrl: string = environment.apiUrl;
   constructor(private http: HttpServiceService) { }
 
-  sendMessge(message: string, userId: string) {
+  sendMessge(message: string, userId: string, isVoiceAuthenticated: boolean) {
     const transaction = 'transaction';
     const history = 'history';
     
@@ -23,8 +23,9 @@ export class BotInteractionService {
       url = this.serviceUrl + "bot/message/pendingbill?message=" + message;
     }
     if (userId != undefined) {
-      const headers = new HttpHeaders()
-        .set('userId', '' + userId);
+      let isVoiceAuthenticatedString:string = ''+isVoiceAuthenticated;
+      const headers = new HttpHeaders() .set('userId', '' + userId)
+      .set('isVoiceAuthenticated', '' + isVoiceAuthenticatedString);
       return this.http.getData(url, { 'headers': headers });
     } else {
       return this.http.getData(url);
