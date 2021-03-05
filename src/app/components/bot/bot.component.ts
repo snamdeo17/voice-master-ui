@@ -36,6 +36,7 @@ interface PendingBills {
 export class BotComponent implements OnInit {
   destroy$ = new Subject();
   isRegisterOpen: boolean = false;
+  isRecordingOn: boolean = false;
   register$: Subscription;
   recognized$ = this.senseService.getType(RecognizedTextAction);
   state$: Observable<string>;
@@ -100,7 +101,8 @@ export class BotComponent implements OnInit {
             console.log(result);
             msg = result.trim();
             //msg should contain master except
-
+            // don't send a message to server if recording is on for user voice authentication
+          if(!this.isRecordingOn){
             this.botInteraction
               .sendMessge(msg, this.userId$, this.isVoiceAuthenticated$)
               .subscribe((data: any) => {
@@ -157,6 +159,7 @@ export class BotComponent implements OnInit {
                   this.senseService.speak(this.outputMsg$);
                 }
               });
+            }
           } else {
             console.log("command not started from master");
           }
@@ -176,12 +179,14 @@ export class BotComponent implements OnInit {
 
   public async compareVoice() {
     let alreadyCalled = false;
+this.isRecordingOn = true;
     await this.delay(5500);
     this.registerComponent.startRecordingForAuth(this.userId$);
     console.log('before delay');
     await this.delay(10000);
     console.log('after delay');
     this.registerComponent.stopRecordingForAuth(this.userId$);
+  this.isRecordingOn = false;
     //await this.delay(5500);
     //this.outputMsg$ = this.recordRTCService.voiceAuthResponse;
     this.recordRTCService.userVoiceObs.subscribe((voiceAuthRes) => {
