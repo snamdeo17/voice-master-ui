@@ -220,7 +220,7 @@ this.isRecordingOn = true;
   }
 
   getAlertForPendingBill() {
-    this.subscription = timer(60 * 1000, 10 * 60 * 1000)
+    this.subscription = timer(2 * 60 * 1000, 10 * 60 * 1000)
       .pipe(
         switchMap(() =>
           this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$, this.isVoiceAuthenticated$)
@@ -228,12 +228,17 @@ this.isRecordingOn = true;
       )
       .subscribe((data: any) => {
         const message = data["resp"];
+        const MessageToSpeakOut = data['pendingBill'];
+
         if (data["userId"] != undefined) {
           this.userId$ = data["userId"];
+          console.log("User is logged in ",this.userId$);
           this.isAccntBalance = true;
           if (message[0].billname == null && !message.includes("no bill")) {
-            this.outputMsg$ = message;
-            this.senseService.speak(message.replaceAll("<br/>", ""));
+            this.outputMsg$ = "Please see below list of pending bills.";
+						this.isBillPending = true;
+						this.pendingBills = message;						
+						this.senseService.speak(MessageToSpeakOut);
           }
         } else {
           console.log("User is not logged in");
