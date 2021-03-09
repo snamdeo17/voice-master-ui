@@ -184,7 +184,7 @@ export class RecordRTCService {
   }
 
   authenticateUserVoice(blob: any, userId: string): Observable<any> {
-    let uploadUrl = this.serviceUrl + "/user/authenticatevoice";
+    let uploadUrl = this.serviceUrl + "user/authenticatevoice";
     const formData = new FormData();
     formData.append("file", blob, "sample.wav");
     formData.append("userId", userId);
