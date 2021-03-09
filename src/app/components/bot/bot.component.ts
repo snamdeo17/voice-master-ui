@@ -220,7 +220,8 @@ this.isRecordingOn = true;
   }
 
   getAlertForPendingBill() {
-    this.subscription = timer(2 * 60 * 1000, 10 * 60 * 1000)
+    if(!this.isRecordingOn){
+    this.subscription = timer(10 * 60 * 1000, 30 * 60 * 1000)
       .pipe(
         switchMap(() =>
           this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$, this.isVoiceAuthenticated$)
@@ -244,5 +245,6 @@ this.isRecordingOn = true;
           console.log("User is not logged in");
         }
       });
+    }
   }
 }
