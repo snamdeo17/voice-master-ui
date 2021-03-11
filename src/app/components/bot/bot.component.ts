@@ -157,7 +157,8 @@ export class BotComponent implements OnInit {
 	}
 	
 	getAlertForPendingBill() {
-			this.subscription = timer(60*1000, 10*60*1000).pipe(
+			this.subscription = timer(10 * 60 * 1000, 30 * 60 * 1000).pipe(
+				
 				switchMap(() => this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$))
 			  ).subscribe((data: any) => {				
 				const message = data['resp'];
