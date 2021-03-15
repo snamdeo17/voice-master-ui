@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { SenseService } from '../../../services/sense.service';
 import { tap, filter, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { MessagingService } from 'src/services/messaging.service';
 
 @Component({
 	selector: 'app-settings',
@@ -9,6 +10,7 @@ import { Subject } from 'rxjs';
 	styleUrls: ['./settings.component.css'],
 })
 export class SettingsComponent implements OnInit, OnDestroy {
+	
 	settingsOpen = false;
 	selectedIndex: number;
 
@@ -16,7 +18,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	activeVoice: any;
 	destroy$ = new Subject();
 
-	constructor(private sense: SenseService) {}
+	subscription: Subscription;
+
+	constructor(private sense: SenseService, 
+		private messageService:MessagingService) {
+		this.subscription = this.messageService.getMessage().subscribe(message => {
+			if (message){
+			  if(message == "false"){
+				  this.settingsOpen = false;
+			  }
+			}
+		  });
+	}
 
 	ngOnInit() {
 		this.loadVoices();

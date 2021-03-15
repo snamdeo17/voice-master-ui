@@ -7,6 +7,7 @@ import { SenseService } from "../../../services/sense.service";
 import { CustomerService } from "../../../services/customer.service";
 import { Customer } from "../../../classes/customer.model";
 import { CustomerSample } from "../../../classes/customer-sample";
+import { MessagingService } from "src/services/messaging.service";
 
 
 
@@ -38,7 +39,8 @@ export class RegisterComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     public recordRTCService: RecordRTCService,
     private senseService: SenseService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private messageService: MessagingService
   ) {}
 
   ngOnInit(): void {}
@@ -53,6 +55,7 @@ export class RegisterComponent implements OnInit {
     this.signupForm.reset();
     this.registerOpen = !this.registerOpen;
     this.customerService.isRegisterOpen$.next(this.registerOpen);
+    this.messageService.sendMessage("false");
   }
 
   registerUser() {

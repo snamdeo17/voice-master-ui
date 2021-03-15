@@ -9,10 +9,11 @@ import { HttpServiceService } from 'src/services/http.service';
 import { BotInteractionService } from 'src/services/bot-interaction.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RegisterComponent } from './components/register/register.component';
+import { MessagingService } from 'src/services/messaging.service'
 
 @NgModule({
   declarations: [AppComponent, SettingsComponent, BotComponent, RegisterComponent],
-  providers: [HttpServiceService, BotInteractionService, RegisterComponent],
+  providers: [HttpServiceService, BotInteractionService, RegisterComponent, MessagingService],
   imports: [BrowserModule, FormsModule, HttpClientModule],
   bootstrap: [AppComponent],
 })
