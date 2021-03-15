@@ -74,14 +74,14 @@ export class RegisterComponent implements OnInit {
         );
       },
       (error) => {
-        const data = error.error["data"];
-        const userId = data["userId"];
-        console.log(userId);
-        if (userId) {
+        console.log("Error:"+JSON.stringify(error));
+        console.log(error.error["description"])
+        alert(error.error["description"])
+        /*if (userId) {
           this.fetchUserSamples(userId);
         } else {
           alert(error["description"]);
-        }
+        }*/
       }
     );
   }
