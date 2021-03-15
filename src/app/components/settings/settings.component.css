@@ -3,3 +3,8 @@
 	top: 10px;
 	right: 10px;
 }
+
+.settingsOpenPostion{
+position: relative;
+top: 50px;
+}

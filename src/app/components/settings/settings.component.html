@@ -1,16 +1,14 @@
 <div class="settings-button" *ngIf="!settingsOpen">
-	<button class="btn btn-default" (click)="toggleSettings()">
-		Settings
-	</button>
+	<button class="btn btn-default" (click)="toggleSettings()">Settings</button>
 </div>
-<ng-container *ngIf="settingsOpen">
-	<div class="panel panel-default">
+<ng-container  *ngIf="settingsOpen">
+	
+	<div class="panel panel-default settingsOpenPostion">
 		<div class="panel-heading">
 			Settings
 		</div>
 		<div class="panel-body">
 			<!-- <input class="form-control" type="text" /> -->
-
 			<select
 				class="form-control"
 				*ngIf="voices"
