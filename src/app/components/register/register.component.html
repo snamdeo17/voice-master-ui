@@ -36,7 +36,7 @@
                         Please enter a valid last secret!
                     </p>
                 </div>
-                <button id="register"  type="submit" class="btn btn-primary">
+                <button [disabled]="!userData.valid" id="register"  type="submit" class="btn btn-primary">
                     Register
                 </button>
                 <button id="cancel" type="button" class="btn btn-primary" (click)="onCancel()">
