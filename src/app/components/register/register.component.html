@@ -36,7 +36,7 @@
                         Please enter a valid last secret!
                     </p>
                 </div>
-                <button [disabled]="!userData.valid" id="register"  type="submit" class="btn btn-primary">
+                <button [disabled]="!userData.valid || registerSuccess" id="register"  type="submit" class="btn btn-primary">
                     Register
                 </button>
                 <button id="cancel" type="button" class="btn btn-primary" (click)="onCancel()">
@@ -45,7 +45,7 @@
 
                 <div id="sample-data">
                     <div class="col-xs-10" *ngIf="registerOpen">
-                        <button [disabled]="!userData.valid" id="start-record" class="btn btn-primary" *ngIf="!isRecording" (click)="startRecording()">
+                        <button [disabled]="!userData.valid || !registerSuccess" id="start-record" class="btn btn-primary" *ngIf="!isRecording" (click)="startRecording()">
                             Start Recording
                         </button>
                         <button id="stop-record" class="btn btn-primary" *ngIf="isRecording" (click)="stopRecording()">

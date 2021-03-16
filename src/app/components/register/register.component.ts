@@ -18,6 +18,7 @@ import { MessagingService } from "src/services/messaging.service";
 })
 export class RegisterComponent implements OnInit {
   registerOpen = false;
+  registerSuccess = false;
 
   @ViewChild("f", { static: false })
   signupForm!: NgForm;
@@ -72,6 +73,7 @@ export class RegisterComponent implements OnInit {
         alert(
           `User ${this.user.fname} ${this.user.lname} is register successfully.`
         );
+        this.registerSuccess = true;
       },
       (error) => {
         console.log("Error:"+JSON.stringify(error));
