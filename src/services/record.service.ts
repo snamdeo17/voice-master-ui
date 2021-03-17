@@ -213,7 +213,8 @@ export class RecordRTCService {
       this.recordingTimer = `00:00`;
     }
     clearInterval(this.interval);
-
+    
+    if(clearTime) {
     this.interval = setInterval(() => {
       console.log(this.recordingTimer);
       let timer: any = this.recordingTimer;
@@ -241,7 +242,7 @@ export class RecordRTCService {
         }
       }
 
-    }, 1000);
+    }, 1000); }
   }
 
   /**

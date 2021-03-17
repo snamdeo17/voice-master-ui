@@ -100,6 +100,11 @@ export class BotComponent implements OnInit {
             var result = msg.replace("master", "").replace("-", " ");
             console.log(result);
             msg = result.trim();
+
+            //Reset voice auth trial count 
+            if(msg.includes('my code is')) {             
+              this.recordRTCService.counterRetry = 2;
+            }
             //msg should contain master except
             // don't send a message to server if recording is on for user voice authentication
           if(!this.isVoiceAuthenticationInProgress){
