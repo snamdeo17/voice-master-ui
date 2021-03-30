@@ -172,7 +172,8 @@ export class RecordRTCService {
   saveFileToServer(blob: any, email: string): Observable<any> {
     let uploadUrl = this.serviceUrl + "user/uploadnewvoice";
     const formData = new FormData();
-    formData.append("file", blob, "sample.wav");
+    let randomNum = Math.floor(Math.random() * 100);
+    formData.append("file", blob, "sample_" + randomNum + ".wav");
     formData.append("email", "" + email);
 
     if (email != undefined) {
@@ -213,36 +214,37 @@ export class RecordRTCService {
       this.recordingTimer = `00:00`;
     }
     clearInterval(this.interval);
-    
-    if(clearTime) {
-    this.interval = setInterval(() => {
-      console.log(this.recordingTimer);
-      let timer: any = this.recordingTimer;
-      if (timer != null) {
-        timer = timer.split(":");
 
-        let minutes = +timer[0];
-        let seconds = +timer[1];
+    if (clearTime) {
+      this.interval = setInterval(() => {
+        console.log(this.recordingTimer);
+        let timer: any = this.recordingTimer;
+        if (timer != null) {
+          timer = timer.split(":");
 
-        if (minutes == 1) {
-          this.recordWebRTC.stopRecording();
-          clearInterval(this.interval);
-          return;
+          let minutes = +timer[0];
+          let seconds = +timer[1];
+
+          if (minutes == 1) {
+            this.recordWebRTC.stopRecording();
+            clearInterval(this.interval);
+            return;
+          }
+          ++seconds;
+          if (seconds >= 59) {
+            ++minutes;
+            seconds = 0;
+          }
+
+          if (seconds < 10) {
+            this.recordingTimer = `0${minutes}:0${seconds}`;
+          } else {
+            this.recordingTimer = `0${minutes}:${seconds}`;
+          }
         }
-        ++seconds;
-        if (seconds >= 59) {
-          ++minutes;
-          seconds = 0;
-        }
 
-        if (seconds < 10) {
-          this.recordingTimer = `0${minutes}:0${seconds}`;
-        } else {
-          this.recordingTimer = `0${minutes}:${seconds}`;
-        }
-      }
-
-    }, 1000); }
+      }, 1000);
+    }
   }
 
   /**

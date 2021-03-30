@@ -9,34 +9,47 @@
                 <div id="userData" ngModelGroup="userData" #userData="ngModelGroup">
                     <div class="form-group">
                         <label for="firstName">First Name</label>
-                        <input class="form-control" type="text" id="firstName" name="firstName" ngModel #firstName="ngModel" required />
+                        <input class="form-control" type="text" id="firstName" name="firstName" ngModel
+                            #firstName="ngModel" required />
                     </div>
                     <p *ngIf="!firstName.valid && firstName.touched">
                         Please enter a valid first name!
                     </p>
                     <div class="form-group">
                         <label for="lastName">Last Name</label>
-                        <input class="form-control" type="text" id="lastName" name="lastName" ngModel #lastName="ngModel" required />
+                        <input class="form-control" type="text" id="lastName" name="lastName" ngModel
+                            #lastName="ngModel" required />
                     </div>
                     <p *ngIf="!lastName.valid && lastName.touched">
                         Please enter a valid last name!
                     </p>
                     <div class="form-group">
                         <label for="email">Mail</label>
-                        <input class="form-control" type="text" id="email" name="email" ngModel #email="ngModel" email required />
+                        <input class="form-control" type="text" id="email" name="email" ngModel #email="ngModel" email
+                            required />
                     </div>
                     <p *ngIf="!email.valid && email.touched">
                         Please enter a valid email!
                     </p>
                     <div class="form-group">
                         <label for="secret">Secret Code</label>
-                        <input class="form-control" type="text" id="secret" name="secret" ngModel #secret="ngModel" required />
+                        <input class="form-control" type="text" id="secret" name="secret" ngModel #secret="ngModel"
+                            required />
                     </div>
                     <p *ngIf="!secret.valid && secret.touched">
                         Please enter a valid last secret!
                     </p>
+                    <div class="form-group">
+                        <label for="phrase">Phrase</label>
+                        <input class="form-control" type="text" id="phrase" name="phrase" ngModel #phrase="ngModel"
+                            required />
+                    </div>
+                    <p *ngIf="!phrase.valid && phrase.touched">
+                        Please enter a valid phrase!
+                    </p>
                 </div>
-                <button [disabled]="!userData.valid || registerSuccess" id="register"  type="submit" class="btn btn-primary">
+                <button [disabled]="!userData.valid || registerSuccess" id="register" type="submit"
+                    class="btn btn-primary">
                     Register
                 </button>
                 <button id="cancel" type="button" class="btn btn-primary" (click)="onCancel()">
@@ -45,16 +58,17 @@
 
                 <div id="sample-data">
                     <div class="col-xs-10" *ngIf="registerOpen">
-                        <button [disabled]="!userData.valid || !registerSuccess" id="start-record" class="btn btn-primary" *ngIf="!isRecording" (click)="startRecording()">
+                        <button [disabled]="!userData.valid || !registerSuccess" id="start-record"
+                            class="btn btn-primary" *ngIf="!isRecording" (click)="startRecording()">
                             Start Recording
                         </button>
                         <button id="stop-record" class="btn btn-primary" *ngIf="isRecording" (click)="stopRecording()">
                             Stop Recording
                         </button>
                         <p style="font-family: monospace">{{ recordTimer }}</p>
-                         <ng-template [ngIf]="blobUrl">
-                        <audio [src]="blobUrl" controls></audio>
-                    </ng-template> 
+                        <ng-template [ngIf]="blobUrl">
+                            <audio [src]="blobUrl" controls></audio>
+                        </ng-template>
                         <p *ngFor=" let sample of voiceSamples "> {{sample}}</p>
                         <ng-template id="samples " *ngFor="let voice of voiceSamples; let i=index ">
                             <p> voiceSamples :: {{ voice }}</p>

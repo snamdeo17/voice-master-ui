@@ -2,5 +2,6 @@ export interface Customer {
 	fname: string;
 	lname: string;
 	email: string;
-    secretCode: string
+	secretCode: string;
+	phrase: string
 }

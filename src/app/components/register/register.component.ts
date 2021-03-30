@@ -28,6 +28,7 @@ export class RegisterComponent implements OnInit {
     lname: "",
     email: "",
     secretCode: "",
+    phrase: "",
   };
 
   isRecording = false;
@@ -42,15 +43,15 @@ export class RegisterComponent implements OnInit {
     private senseService: SenseService,
     private customerService: CustomerService,
     private messageService: MessagingService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
 
   toggleRegister() {
-		this.registerOpen = !this.registerOpen;
+    this.registerOpen = !this.registerOpen;
     this.customerService.isRegisterOpen$.next(this.registerOpen);
-	}
+  }
 
   onCancel() {
     this.signupForm.reset();
@@ -65,6 +66,7 @@ export class RegisterComponent implements OnInit {
       lname: this.signupForm.value.userData.lastName,
       email: this.signupForm.value.userData.email,
       secretCode: this.signupForm.value.userData.secret,
+      phrase: this.signupForm.value.userData.phrase
     };
     console.log(this.user);
     this.customerService.register(this.user).subscribe(
@@ -76,7 +78,7 @@ export class RegisterComponent implements OnInit {
         this.registerSuccess = true;
       },
       (error) => {
-        console.log("Error:"+JSON.stringify(error));
+        console.log("Error:" + JSON.stringify(error));
         console.log(error.error["description"])
         alert(error.error["description"])
         /*if (userId) {
@@ -93,7 +95,7 @@ export class RegisterComponent implements OnInit {
       (data) => {
         console.log(data);
         // this.voiceSamples = data;
-        console.log("this.voiceSamples:::::::::::"+ this.voiceSamples);
+        console.log("this.voiceSamples:::::::::::" + this.voiceSamples);
       },
       (error) => {
         console.log(error["description"]);

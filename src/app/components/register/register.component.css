@@ -14,13 +14,13 @@ input.ng-invalid.ng-touched {
 
 #cancel {
     position: absolute;
-    top: 300px;
+    top: 370px;
     right: 10px;
 }
 
 #register {
     position: absolute;
-    top: 300px;
+    top: 370px;
     right: 100px;
 }
 
