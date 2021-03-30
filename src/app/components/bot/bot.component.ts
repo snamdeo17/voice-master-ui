@@ -102,68 +102,68 @@ export class BotComponent implements OnInit {
             msg = result.trim();
 
             //Reset voice auth trial count 
-            if(msg.includes('my code is')) {             
+            if (msg.includes('my code is')) {
               this.recordRTCService.counterRetry = 2;
             }
             //msg should contain master except
             // don't send a message to server if recording is on for user voice authentication
-          if(!this.isVoiceAuthenticationInProgress){
-            this.botInteraction
-              .sendMessge(msg, this.userId$, this.isVoiceAuthenticated$)
-              .subscribe((data: any) => {
-                // read user id from header
+            if (!this.isVoiceAuthenticationInProgress) {
+              this.botInteraction
+                .sendMessge(msg, this.userId$, this.isVoiceAuthenticated$)
+                .subscribe((data: any) => {
+                  // read user id from header
 
-                if (data["userId"] == undefined) {
-                  this.userId$ = this.userId$;
-                  this.isAccntBalance = false;
-                } else if (data["userId"] == "") {
-                  //user logged out after Bye Bye
-                  this.userId$ = null;
-                  this.isAccntBalance = false;
-                } else if (data["userId"] != undefined) {
-                  this.userId$ = data["userId"];
-                  this.isAccntBalance = true;
-                }
-                const message = data["resp"];
-                const pendingBillPresent = data["pendingBill"];
-
-                this.isBillPending = false;
-                this.pendingBills = message;
-
-                this.isShown = false; // hidden by default
-                this.historyTransactions = message;
-                this.accountBalance$ = data["accountBalance"];
-                if (
-                  message[0].pendingBillName == null &&
-                  message[0].billname == null
-                ) {
-                  //console.log('both null');
-                  this.outputMsg$ = message;
-                } else if (pendingBillPresent != null) {
-                  //console.log("inside else");
-                  this.isBillPending = true;
-                  this.outputMsg$ = "Please find list of pending bills below";
-                } else if (message[0].billname != null) {
-                  this.isShown = true;
-                  this.outputMsg$ =
-                    "Please find your transaction history below";
-                }
-
-                if (message[0].billname == null && pendingBillPresent == null) {
-                  //console.log('line 127');
-
-                  this.senseService.speak(message);
-                  if (message.includes("Thank you")) {
-                    this.compareVoice();
+                  if (data["userId"] == undefined) {
+                    this.userId$ = this.userId$;
+                    this.isAccntBalance = false;
+                  } else if (data["userId"] == "") {
+                    //user logged out after Bye Bye
+                    this.userId$ = null;
+                    this.isAccntBalance = false;
+                  } else if (data["userId"] != undefined) {
+                    this.userId$ = data["userId"];
+                    this.isAccntBalance = true;
                   }
-                } else if (message[0].pendingBillName != null) {
-                  //console.log('line 130');
-                  this.senseService.speak(pendingBillPresent);
-                } else {
-                  //console.log("else:"+this.outputMsg$);
-                  this.senseService.speak(this.outputMsg$);
-                }
-              });
+                  const message = data["resp"];
+                  const pendingBillPresent = data["pendingBill"];
+
+                  this.isBillPending = false;
+                  this.pendingBills = message;
+
+                  this.isShown = false; // hidden by default
+                  this.historyTransactions = message;
+                  this.accountBalance$ = data["accountBalance"];
+                  if (
+                    message[0].pendingBillName == null &&
+                    message[0].billname == null
+                  ) {
+                    //console.log('both null');
+                    this.outputMsg$ = message;
+                  } else if (pendingBillPresent != null) {
+                    //console.log("inside else");
+                    this.isBillPending = true;
+                    this.outputMsg$ = "Please find list of pending bills below";
+                  } else if (message[0].billname != null) {
+                    this.isShown = true;
+                    this.outputMsg$ =
+                      "Please find your transaction history below";
+                  }
+
+                  if (message[0].billname == null && pendingBillPresent == null) {
+                    //console.log('line 127');
+
+                    this.senseService.speak(message);
+                    if (message.includes("Thank you")) {
+                      this.compareVoice();
+                    }
+                  } else if (message[0].pendingBillName != null) {
+                    //console.log('line 130');
+                    this.senseService.speak(pendingBillPresent);
+                  } else {
+                    //console.log("else:"+this.outputMsg$);
+                    this.senseService.speak(this.outputMsg$);
+                  }
+                });
             }
           } else {
             console.log("command not started from master");
@@ -186,13 +186,13 @@ export class BotComponent implements OnInit {
     let alreadyCalled = false;
     this.isVoiceAuthenticationInProgress = true;
     this.isAccntBalance = false;
-    await this.delay(5500);
+    await this.delay(6000);
     this.registerComponent.startRecordingForAuth(this.userId$);
     console.log('before delay');
-    await this.delay(10000);
+    await this.delay(6000);
     console.log('after delay');
     this.registerComponent.stopRecordingForAuth(this.userId$);
-  
+
     //await this.delay(5500);
     //this.outputMsg$ = this.recordRTCService.voiceAuthResponse;
     this.recordRTCService.userVoiceObs.subscribe((voiceAuthRes) => {
@@ -207,7 +207,7 @@ export class BotComponent implements OnInit {
     this.recordRTCService.isVoiceAuthenticatedObs.subscribe((isVoiceAuthenticated) => {
       this.isVoiceAuthenticated$ = isVoiceAuthenticated;
       this.isVoiceAuthenticationInProgress = false;
-      if(this.isVoiceAuthenticated$){
+      if (this.isVoiceAuthenticated$) {
         this.isAccntBalance = true;
       }
       console.log('isVoiceAuthenticated$' + this.isVoiceAuthenticated$);
@@ -230,31 +230,31 @@ export class BotComponent implements OnInit {
   }
 
   getAlertForPendingBill() {
-    if(!this.isVoiceAuthenticationInProgress){
-    this.subscription = timer(10 * 60 * 1000, 30 * 60 * 1000)
-      .pipe(
-        switchMap(() =>
-          this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$, this.isVoiceAuthenticated$)
+    if (!this.isVoiceAuthenticationInProgress) {
+      this.subscription = timer(10 * 60 * 1000, 30 * 60 * 1000)
+        .pipe(
+          switchMap(() =>
+            this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$, this.isVoiceAuthenticated$)
+          )
         )
-      )
-      .subscribe((data: any) => {
-        const message = data["resp"];
-        const MessageToSpeakOut = data['pendingBill'];
+        .subscribe((data: any) => {
+          const message = data["resp"];
+          const MessageToSpeakOut = data['pendingBill'];
 
-        if (data["userId"] != undefined) {
-          this.userId$ = data["userId"];
-          console.log("User is logged in ",this.userId$);
-          this.isAccntBalance = true;
-          if (message[0].billname == null && !message.includes("no bill")) {
-            this.outputMsg$ = "Please see below list of pending bills.";
-						this.isBillPending = true;
-						this.pendingBills = message;						
-						this.senseService.speak(MessageToSpeakOut);
+          if (data["userId"] != undefined) {
+            this.userId$ = data["userId"];
+            console.log("User is logged in ", this.userId$);
+            this.isAccntBalance = true;
+            if (message[0].billname == null && !message.includes("no bill")) {
+              this.outputMsg$ = "Please see below list of pending bills.";
+              this.isBillPending = true;
+              this.pendingBills = message;
+              this.senseService.speak(MessageToSpeakOut);
+            }
+          } else {
+            console.log("User is not logged in");
           }
-        } else {
-          console.log("User is not logged in");
-        }
-      });
+        });
     }
   }
 }
