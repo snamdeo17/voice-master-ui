@@ -37,7 +37,9 @@
                 <li>My code is 123 Master</li>
                 <li>Show my acccount balance Master</li>
                 <li>Show my bills Master</li>
+				<li>Pay my all electricity bills Master</li>
                 <li>Pay my electricity bill Master</li>
+				<li>Pay my electricity bill with consumer number 1001 Master</li>
                 <!-- li>Add 100 rupees to my account Master</li-->
                 <li>bye bye Master</li>
                 <li>Thank you Master</li>
@@ -104,6 +106,7 @@
                     <th>Bill Name</th>
                     <th>Amount</th>
                     <th>Due Date</th>
+					<th>Consumer Number</th>
                 </tr>
             </thead>
             <tbody>
@@ -111,6 +114,7 @@
                     <td>{{ pendingBill.pendingBillName }}</td>
                     <td>{{ pendingBill.billAmount }}</td>
                     <td>{{ pendingBill.billDueDate }}</td>
+					<td>{{ pendingBill.consumerId }}</td>
                 </tr>
             </tbody>
         </table>
