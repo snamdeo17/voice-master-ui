@@ -118,7 +118,7 @@ export class RecordRTCService {
           catchError((error: HttpErrorResponse) => {
             let errMsg = error.error.description;
             if (this.counterRetry > 0) {
-              errMsg = errMsg + '. Kindly retry. Please speak couple of sentences for next 10 seconds to authenticate your voice'
+              errMsg = errMsg + '. Kindly retry.'
               // this.senseService.speak(errMsg);
             } else {
               errMsg = errMsg + ". Kindly authenticate yourself to start. Please Provide your secret code";

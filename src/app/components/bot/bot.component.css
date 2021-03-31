@@ -92,6 +92,10 @@ h1 {text-align: center;}
 	right: 500px;	
 }
 
+.phrase{
+	font-size: large;
+}
+
 table {
 	border-collapse: collapse;
 	table-layout: auto;

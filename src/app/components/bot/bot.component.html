@@ -115,6 +115,10 @@
             </tbody>
         </table>
     </div>
+    <div class="phrase" *ngIf="phrase$ != null">
+        Phrase to read : <b>{{ phrase$ }} </b>
+    </div>
+
     <button class="activate-button" (click)="activate()">Activate</button>
 
 </div>

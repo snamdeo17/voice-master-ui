@@ -55,6 +55,7 @@ export class BotComponent implements OnInit {
   pendingBills: PendingBills[];
   micAccess$ = this.senseService.hasMicrofonAccess$;
   counterRetry: number = 2;
+  phrase$:string;
 
   constructor(
     private senseService: SenseService,
@@ -116,16 +117,21 @@ export class BotComponent implements OnInit {
                   if (data["userId"] == undefined) {
                     this.userId$ = this.userId$;
                     this.isAccntBalance = false;
+                    
                   } else if (data["userId"] == "") {
                     //user logged out after Bye Bye
                     this.userId$ = null;
                     this.isAccntBalance = false;
+                    
                   } else if (data["userId"] != undefined) {
                     this.userId$ = data["userId"];
                     this.isAccntBalance = true;
                   }
                   const message = data["resp"];
                   const pendingBillPresent = data["pendingBill"];
+                  
+                  this.phrase$ = data["phrase"];
+                  console.log("phrase is:"+this.phrase$)
 
                   this.isBillPending = false;
                   this.pendingBills = message;
@@ -209,6 +215,7 @@ export class BotComponent implements OnInit {
       this.isVoiceAuthenticationInProgress = false;
       if (this.isVoiceAuthenticated$) {
         this.isAccntBalance = true;
+        
       }
       console.log('isVoiceAuthenticated$' + this.isVoiceAuthenticated$);
     })
