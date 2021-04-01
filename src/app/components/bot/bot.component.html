@@ -119,7 +119,7 @@
             </tbody>
         </table>
     </div>
-    <div class="phrase" *ngIf="phrase$ != null">
+    <div class="phrase" *ngIf="phrase$ != null && !isVoiceAuthenticated$">
         Phrase to read : <b>{{ phrase$ }} </b>
     </div>
 
