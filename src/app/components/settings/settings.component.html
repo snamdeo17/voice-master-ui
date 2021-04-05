@@ -1,8 +1,9 @@
-<div class="settings-button" *ngIf="!settingsOpen">
+<!-- <div class="settings-button" *ngIf="!settingsOpen">
 	<button class="btn btn-default" (click)="toggleSettings()">Settings</button>
-</div>
-<ng-container  *ngIf="settingsOpen">
-	
+</div> -->
+<ng-container  *ngIf="!settingsOpen">
+	<div class="container">
+		<div class="col-md-6">
 	<div class="panel panel-default settingsOpenPostion">
 		<div class="panel-heading">
 			Settings
@@ -22,7 +23,7 @@
 					{{ v.name }} ({{ v.lang }})
 				</option>
 			</select>
-
+          <div class="mt-5">
 			<button class="btn btn-primary" (click)="updateVoice()">
 				Update
 			</button>
@@ -30,5 +31,8 @@
 				Close
 			</button>
 		</div>
+		</div>
 	</div>
+</div>
+</div>
 </ng-container>

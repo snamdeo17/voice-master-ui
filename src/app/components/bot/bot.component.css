@@ -79,49 +79,87 @@ h1 {text-align: center;}
 
 .message-box {
 	font-size: large;
-	background-color: azure;
 	padding: 15px 10px;
 	margin-top: 20px;
 	border-radius: 5px;
 }
 
+/* New css changes */
+.phrase{
+	font-size: 14px;
+}
+.phrase-title {
+	color: skyblue;
+}
+.output-msg{
+	color:#EE6518;
+	font-style: italic;
+	font-weight: 500;
+}
 .account-balance {
 	font-size: large;
-	background-color: rgba(103, 241, 85, 0.692);	
-	position: absolute;	
-	right: 500px;	
 }
 
-.phrase{
-	font-size: large;
-}
+.info-section {
+	position: absolute;
+    top: -86px;
+    left: 0;
 
-table {
-	border-collapse: collapse;
-	table-layout: auto;
 }
- 
-thead tr {
-    height: 60px;
+.info-section .p-overlaypanel-close {
+	background:#17a2b8!important;
 }
- 
-table, th, td {
-    border: 1px solid #000000;
+.voice-image img {
+	margin-top: 20px;
+	width: 230px;
+	height: auto;
 }
- 
-td {
-    white-space: normal;
-    max-width: 45%;
-	width: 40%;
-	table-layout: auto;
-    word-break: break-all;
-    height: 60px;
-    padding: 10px;
+.listen-text {
+    font-style: italic;
+    color: #4A235A;
 }
-tr:nth-child(even) {
-    background: #ccc
+.commands-section {
+	text-align: left;
 }
- 
-tr:nth-child(odd) {
-    background: #fff
+.commands-section ul li{
+font-family: 'Nunito', sans-serif;
+font-family: 'Source Code Pro', monospace;
+list-style-type: none;
+font-size: 16px;
+color:#2E054F;
+}
+.commands-section ul b {
+	font-size: 16px;
+}
+.message-box {
+	font-style: italic;
+    color: #4A235A;
+	font-size: 20px;
+}
+.activate {
+	margin-top: 5px;;
+}
+.pi-info-circle {
+	font-size: 2rem;
+	position: absolute;
+	right: 25px;
+	top: 10px;
+	cursor: pointer;
+	color:#17a2b8;
+}
+.left-section{
+	border-radius: 5px;
+}
+.p-overlaypanel {
+	top: 10px !important;
+}
+.table-title {
+	color:#17a2b8;
+}
+.ng-star-inserted th {
+	background:aliceblue;
+	padding:0.7rem 0.7rem;
+}
+.ng-star-inserted td {
+	padding:0.5rem 0.5rem;
 }

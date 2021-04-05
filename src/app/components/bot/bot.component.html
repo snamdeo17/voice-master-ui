@@ -1,128 +1,111 @@
-<app-register></app-register>
-<app-settings></app-settings>
-
-<div class="alert" *ngIf="!(micAccess$ | async)">
-    No microphone access! You need to give micphone access. (You may click refresh button to be prompted mic access pop up)
-</div>
-
-<div class="container" *ngIf="!isRegisterOpen">
-    <h1>Voice Master</h1>
-    <h4>
-        {{ state$ | async }}
-    </h4>
-    <div style="height:300px;">
-        <div style="float:left;">
-            <img [ngClass]="getImageClass()" src="https://cdn2.vectorstock.com/i/thumb-large/72/11/female-cartoon-robot-vector-20707211.jpg" />
-            <!-- src="https://cdn.pixabay.com/photo/2015/06/12/18/31/cute-807306_960_720.png" -->
+<div class="container-fluid">
+    <div class="row mt-2">
+        <div class="col-md-12 alert text-center alert-warning" *ngIf="!(micAccess$ | async)">
+            No microphone access! You need to give micphone access. (You may click refresh button to be prompted mic access pop up)
         </div>
-
+    </div>
+<div class="row mt-3">
+<div class="col-md-4 text-center ">
+    <div class="border p-3 left-section">
+        <i class="pi pi-info-circle" (click)="op.toggle($event)"></i>
+        <div class="info-section">
+        <p-overlayPanel class="command-overlay" #op [showCloseIcon]="true" [style]="{width: '450px'}">
+            <ng-template pTemplate>
+                <div class="commands-section">
+                <ul>
+                    <b>Try following commands after click on Activate:</b>
+                    <li>Master, Hello</li>
+                    <li>Master, My code is 123</li>
+                    <li>Master, Show my acccount balance</li>
+                    <li>Master, Show my bills</li>
+                    <li>Master, Pay my electricity bill</li>
+                    <li>Master, Show my transaction history</li>
+                    <li>Master, Thank you</li>
+                    <li>Master, bye bye</li>
+                </ul>
+            </div>
+            </ng-template>
+        </p-overlayPanel>
+    </div>
+    <div *ngIf="!isRegisterOpen">
+        <h5 class="listen-text mt-3">
+            {{ state$ | async }}
+        </h5>
         <div class="account-balance" *ngIf="isAccntBalance">
             Account Balance : <b>{{ accountBalance$ }} </b>
         </div>
-
-        <div style="float:right;">
-            <ul>
-                <b>Try following commands:</b>
-                <li>Master, Hello</li>
-                <li>Master, My code is 123</li>
-                <li>Master, Show my acccount balance</li>
-                <li>Master, Show my bills</li>
-                <li>Master, Pay my electricity bill</li>
-                <!--li>Master, Add 100 rupees to my account</li-->
-                <li>Master, Show my transaction history</li>
-                <li>Master, Thank you</li>
-                <li>Master, bye bye</li>
-                <b>Try adding master at the end:</b>
-                <li>Hello Master</li>
-                <li>My code is 123 Master</li>
-                <li>Show my acccount balance Master</li>
-                <li>Show my bills Master</li>
-				<li>Pay my all electricity bills Master</li>
-                <li>Pay my electricity bill Master</li>
-				<li>Pay my electricity bill with consumer number 1001 Master</li>
-                <!-- li>Add 100 rupees to my account Master</li-->
-                <li>bye bye Master</li>
-                <li>Thank you Master</li>
-            </ul>
-        </div>
     </div>
-
-    <div class="message-box">
-        Input: {{ message$ | async }}
+    <div class="voice-image">
+        <!-- <img [ngClass]="getImageClass()" src="https://cdn2.vectorstock.com/i/thumb-large/72/11/female-cartoon-robot-vector-20707211.jpg" /> -->
+        <img src="assets/voice.png" />
     </div>
-
     <div class="message-box">
+        <h5 class="listen-text">Input: {{ message$ | async }}</h5>
+    </div>
+    <div class="output-msg">
         <div [innerHTML]="outputMsg$"></div>
     </div>
-    <div class="container" *ngIf="isShown" id="divshow">
-
-        <h1 style="background-color: green;">Transaction History</h1>
-
-        <table mat-table>
-            <!--class="table table-striped">-->
-
-            <thead>
-
-                <tr>
-
-                    <th>Bill Name</th>
-
-                    <th>Transaction Date</th>
-
-                    <th>Amount</th>
-                    <th>Transaction Type</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                <tr *ngFor="let historyTransaction of historyTransactions">
-
-                    <td>{{ historyTransaction.billname }}</td>
-
-                    <td>{{ historyTransaction.paidon }}</td>
-
-                    <td>{{ historyTransaction.amount }}</td>
-
-                    <td>{{ historyTransaction.type }}</td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    <div class="container" *ngIf="isBillPending" id="showBills">
-
-        <h1 style="background-color: green;">Pending Bills</h1>
-
-        <table mat-table>
-            <thead>
-                <tr>
-                    <th>Bill Name</th>
-                    <th>Amount</th>
-                    <th>Due Date</th>
-					<th>Consumer Number</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let pendingBill of pendingBills">
-                    <td>{{ pendingBill.pendingBillName }}</td>
-                    <td>{{ pendingBill.billAmount }}</td>
-                    <td>{{ pendingBill.billDueDate }}</td>
-					<td>{{ pendingBill.consumerId }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
     <div class="phrase" *ngIf="phrase$ != null">
-        Phrase to read : <b>{{ phrase$ }} </b>
+        <div class="alert alert-warning" role="alert">
+           <span class="phrase-title">Phrase to read : </span>{{ phrase$ }}
+          </div>
     </div>
-
-    <button class="activate-button" (click)="activate()">Activate</button>
-
+    <button type="button" class="btn btn-info activate" (click)="activate()">Activate</button>
+  </div>
+</div>
+<div class="col-md-8">
+    <div class="alert alert-info" role="alert">
+        Pending bills and transaction history will display here...
+    </div>
+    <!-- Table design start For Transaction History -->
+    <div class="" *ngIf="isShown" id="divshow">
+    <h5 class="table-title">Transaction history</h5>
+ <p-table [value]="historyTransactions" class="custom-table" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" 
+ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Description</th>
+            <th>Transaction Date</th>
+            <th>Amount</th>
+            <th>Transaction Type</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-historyTransactions>
+        <tr>
+            <td>{{ historyTransactions.billname }}</td>
+            <td>{{ historyTransactions.paidon }}</td>
+            <td>{{ historyTransactions.amount }}</td>
+            <td>{{ historyTransactions.type }}</td>
+        </tr>
+    </ng-template>
+   
+</p-table>
+</div>
+<!-- Table design end For Transaction History -->
+<!-- Table design start For Pending bills -->
+<div class="" *ngIf="isBillPending" id="showBills">
+    <h5 class="table-title">Pending Bills</h5>
+ <p-table [value]="pendingBills" class="custom-table" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" 
+ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Bill Name</th>
+            <th>Amount</th>
+            <th>Due Date</th>
+            <th>Consumer Number</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pendingBills>
+        <tr>
+            <td>{{ pendingBills.pendingBillName }}</td>
+            <td>{{ pendingBills.billAmount }}</td>
+            <td>{{ pendingBills.billDueDate }}</td>
+            <td>{{ pendingBills.consumerId }}</td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>
+<!-- Table design end For Pending bills -->
+</div>
+</div>
 </div>

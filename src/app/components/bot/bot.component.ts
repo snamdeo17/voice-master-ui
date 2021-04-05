@@ -56,7 +56,6 @@ export class BotComponent implements OnInit {
   micAccess$ = this.senseService.hasMicrofonAccess$;
   counterRetry: number = 2;
   phrase$:string;
-
   constructor(
     private senseService: SenseService,
     private botInteraction: BotInteractionService,

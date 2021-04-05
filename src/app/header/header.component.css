@@ -1,0 +1,13 @@
+.voice-master-navbar {
+    background-color: #17a2b8!important;
+}
+.navbar-brand {
+    color: #fff;
+}
+.navbar-nav>li>a {
+    color: #fff !important;;
+}
+.navbar-nav>li>a:focus, 
+.navbar-nav>li>a:hover {
+color:unset;
+}

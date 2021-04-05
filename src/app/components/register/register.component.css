@@ -13,12 +13,12 @@ input.ng-invalid.ng-touched {
 }
 
 #cancel {
-    position: absolute;
-    top: 370px;
-    right: 10px;
+    margin-left: 10px;
 }
-
-#register {
+.form-bg-left{
+background-color: #17a2b8!important
+}
+/* #register {
     position: absolute;
     top: 370px;
     right: 100px;
@@ -34,4 +34,8 @@ input.ng-invalid.ng-touched {
     position: absolute;
     top: 5px;
     left: -1px;
+} */
+.registration-section {
+    align-items: center;
+    justify-content: center;
 }
