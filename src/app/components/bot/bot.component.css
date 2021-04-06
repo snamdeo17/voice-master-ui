@@ -163,3 +163,6 @@ color:#2E054F;
 .ng-star-inserted td {
 	padding:0.5rem 0.5rem;
 }
+.custom-table tr td {
+	font-size: 14px;
+}

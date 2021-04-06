@@ -57,7 +57,7 @@
 </div>
 <div class="col-md-8">
     <div class="alert alert-info" role="alert">
-        Pending bills and transaction history will display here...
+        Pending bills and transaction history
     </div>
     <!-- Table design start For Transaction History -->
     <div class="" *ngIf="isShown" id="divshow">
@@ -66,18 +66,18 @@
  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
     <ng-template pTemplate="header">
         <tr>
-            <th>Description</th>
-            <th>Transaction Date</th>
-            <th>Amount</th>
-            <th>Transaction Type</th>
+            <th style="width: 35%;">Description</th>
+            <th style="width: 30%;">Transaction Date</th>
+            <th style="width: 15%;" class="text-center">Amount</th>
+            <th style="width: 20%;" class="text-center">Transaction Type</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-historyTransactions>
         <tr>
             <td>{{ historyTransactions.billname }}</td>
             <td>{{ historyTransactions.paidon }}</td>
-            <td>{{ historyTransactions.amount }}</td>
-            <td>{{ historyTransactions.type }}</td>
+            <td class="text-center">{{ historyTransactions.amount }}</td>
+            <td class="text-center">{{ historyTransactions.type }}</td>
         </tr>
     </ng-template>
    
