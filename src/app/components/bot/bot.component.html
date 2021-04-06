@@ -99,7 +99,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-pendingBills>
         <tr>
-            <td>{{ pendingBills.pendingBillName }}</td>
+            <td>{{ pendingBills.pendingBillName | titlecase}}</td>
             <td>{{ pendingBills.billAmount }}</td>
             <td>{{ pendingBills.billDueDate }}</td>
             <td>{{ pendingBills.consumerId }}</td>
