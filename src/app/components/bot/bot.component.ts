@@ -58,6 +58,7 @@ export class BotComponent implements OnInit {
   micAccess$ = this.senseService.hasMicrofonAccess$;
   counterRetry: number = 2;
   phrase$:string;
+  billPaidStatus:boolean=false;
 
   constructor(
     private senseService: SenseService,
@@ -148,6 +149,11 @@ export class BotComponent implements OnInit {
                     message[0].billname == null
                   ) {
                     //console.log('both null');
+                    if(message.includes("I have paid the amount of")) {
+                      this.billPaidStatus = true;
+                    } else {
+                      this.billPaidStatus = false;
+                    }
                     this.outputMsg$ = message;
                   } else if (pendingBillPresent != null) {
                     //console.log("inside else");

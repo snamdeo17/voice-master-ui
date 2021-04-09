@@ -52,8 +52,16 @@
         Pending bills and transaction history
     </div>
     <!-- Output messages -->
-    <div class="output-msg">
+    <div class="output-msg" *ngIf="!billPaidStatus">
         <div [innerHTML]="outputMsg$"></div>
+    </div>
+    <div class="alert alert-success text-center" role="alert" *ngIf="billPaidStatus">
+        <div> 
+            <img src="./assets/success-icon-19.png" class="success-icon"/>
+            <p>
+                {{outputMsg$}}
+            </p>
+            </div>
     </div>
     <div class="phrase" *ngIf="phrase$ != null && !isVoiceAuthenticated$">
         <div class="alert alert-warning" role="alert">
