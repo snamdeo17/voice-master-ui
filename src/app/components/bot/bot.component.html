@@ -34,7 +34,7 @@
             {{ state$ | async }}
         </h5>
         <div class="account-balance" *ngIf="isAccntBalance">
-            Account Balance : <b>{{ accountBalance$ }} </b>
+            Account Balance : <b>${{ accountBalance$ }} </b>
         </div>
     </div>
     <div class="voice-image">
@@ -44,6 +44,14 @@
     <div class="message-box">
         <h5 class="listen-text">Input: {{ message$ | async }}</h5>
     </div>
+    <button type="button" class="btn btn-info activate" (click)="activate()">Activate</button>
+  </div>
+</div>
+<div class="col-md-8">
+    <div class="alert alert-info" role="alert">
+        Pending bills and transaction history
+    </div>
+    <!-- Output messages -->
     <div class="output-msg">
         <div [innerHTML]="outputMsg$"></div>
     </div>
@@ -51,13 +59,6 @@
         <div class="alert alert-warning" role="alert">
            <span class="phrase-title">Phrase to read : </span>{{ phrase$ }}
           </div>
-    </div>
-    <button type="button" class="btn btn-info activate" (click)="activate()">Activate</button>
-  </div>
-</div>
-<div class="col-md-8">
-    <div class="alert alert-info" role="alert">
-        Pending bills and transaction history
     </div>
     <!-- Table design start For Transaction History -->
     <div class="" *ngIf="isShown" id="divshow">
@@ -68,7 +69,7 @@
         <tr>
             <th style="width: 35%;">Description</th>
             <th style="width: 30%;">Transaction Date</th>
-            <th style="width: 15%;" class="text-center">Amount</th>
+            <th style="width: 15%;" class="text-center">Amount($)</th>
             <th style="width: 20%;" class="text-center">Transaction Type</th>
         </tr>
     </ng-template>
@@ -92,7 +93,7 @@
     <ng-template pTemplate="header">
         <tr>
             <th>Bill Name</th>
-            <th>Amount</th>
+            <th>Amount($)</th>
             <th>Due Date</th>
             <th>Consumer Number</th>
         </tr>
