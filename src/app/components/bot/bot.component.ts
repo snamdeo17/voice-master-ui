@@ -36,6 +36,7 @@ interface PendingBills {
 export class BotComponent implements OnInit {
   destroy$ = new Subject();
   isRegisterOpen: boolean = false;
+  isVoiceCommandGiven: boolean = false;
   isVoiceAuthenticationInProgress: boolean = false;
   register$: Subscription;
   recognized$ = this.senseService.getType(RecognizedTextAction);
@@ -48,7 +49,8 @@ export class BotComponent implements OnInit {
   userId$: string;
   accountBalance$: string;
   isAccntBalance: boolean = false;
-  subscription: Subscription;
+  subscription: Subscription;  
+  billNotificatonSubscription : Subscription;
   defaultAlertInput: string = "show my bills";
   blobUrl = this.recordRTCService?.blobUrl;
   isBillPending: boolean = false;
@@ -56,6 +58,7 @@ export class BotComponent implements OnInit {
   micAccess$ = this.senseService.hasMicrofonAccess$;
   counterRetry: number = 2;
   phrase$:string;
+
   constructor(
     private senseService: SenseService,
     private botInteraction: BotInteractionService,
@@ -94,7 +97,6 @@ export class BotComponent implements OnInit {
 
           // if input "bye-bye"
           // userid set to null and close the session
-          //if()
           msg = msg.toLowerCase();
           if (msg.includes("master") || msg === "yes") {
             var result = msg.replace("master", "").replace("-", " ");
@@ -105,6 +107,9 @@ export class BotComponent implements OnInit {
             if (msg.includes('my code is')) {
               this.recordRTCService.counterRetry = 2;
             }
+            //Set flag if voice command is given by the user
+            this.isVoiceCommandGiven = true;
+
             //msg should contain master except
             // don't send a message to server if recording is on for user voice authentication
             if (!this.isVoiceAuthenticationInProgress) {
@@ -227,6 +232,7 @@ export class BotComponent implements OnInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.register$.unsubscribe();
+    this.billNotificatonSubscription.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -235,9 +241,9 @@ export class BotComponent implements OnInit {
     this.senseService.activate();
   }
 
-  getAlertForPendingBill() {
+  getAlertForPendingBill() {  
     if (!this.isVoiceAuthenticationInProgress) {
-      this.subscription = timer(10 * 60 * 1000, 30 * 60 * 1000)
+      this.subscription = timer(3*60*1000, 10*60*1000)
         .pipe(
           switchMap(() =>
             this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$, this.isVoiceAuthenticated$)
@@ -251,16 +257,28 @@ export class BotComponent implements OnInit {
             this.userId$ = data["userId"];
             console.log("User is logged in ", this.userId$);
             this.isAccntBalance = true;
-            if (message[0].billname == null && !message.includes("no bill")) {
+            if (message[0].billname == null && !message.includes("no bill") && !this.isVoiceCommandGiven) {
               this.outputMsg$ = "Please see below list of pending bills.";
               this.isBillPending = true;
               this.pendingBills = message;
               this.senseService.speak(MessageToSpeakOut);
+            } else if(this.isVoiceCommandGiven) {              
+              this.resetVoiceCommandFlag();
             }
           } else {
             console.log("User is not logged in");
           }
         });
     }
+  }
+
+  resetVoiceCommandFlag() {   
+     const source = timer(1000, 60*1000);
+     this.billNotificatonSubscription = source.subscribe(val => {
+      if(val === 2) {
+        this.isVoiceCommandGiven = false ;
+        this.billNotificatonSubscription.unsubscribe();
+      }            
+    });    
   }
 }
