@@ -28,6 +28,8 @@ export class RecordRTCService {
   subscription: Subscription;
   voiceAuthRes: Subject<any> = new Subject<any>();
   public userVoiceObs = this.voiceAuthRes.asObservable();
+  userName: Subject<any> = new Subject<any>();
+  public userNameObs = this.userName.asObservable();
   counterRetry: number = 2;
 
   options: any = {
@@ -111,6 +113,7 @@ export class RecordRTCService {
             this.senseService.speak(event.description);
             //this.voiceAuthResponse = event.description;
             this.voiceAuthRes.next(event.description);
+            this.userName.next(event.userName);
             this.isVoiceAuthenticated.next(true);
             return event.description;
 

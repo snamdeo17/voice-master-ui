@@ -101,7 +101,7 @@ export class BotComponent implements OnInit {
           msg = msg.toLowerCase();
           if (msg.includes("master") || msg === "yes") {
             var result = msg.replace("master", "").replace("-", " ");
-            console.log(result);
+            console.log("result==" +result);
             msg = result.trim();
 
             //Reset voice auth trial count 
@@ -127,6 +127,7 @@ export class BotComponent implements OnInit {
                     //user logged out after Bye Bye
                     this.userId$ = null;
                     this.isAccntBalance = false;
+                    this.recordRTCService.userName.next("");
                     
                   } else if (data["userId"] != undefined) {
                     this.userId$ = data["userId"];
@@ -144,6 +145,7 @@ export class BotComponent implements OnInit {
                   this.isShown = false; // hidden by default
                   this.historyTransactions = message;
                   this.accountBalance$ = data["accountBalance"];
+                  this.billPaidStatus = false;
                   if (
                     message[0].pendingBillName == null &&
                     message[0].billname == null

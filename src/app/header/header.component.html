@@ -10,7 +10,8 @@
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
-      <li><a routerLink="/register" class="nav-link"><span class="fa fa-user"></span> Register</a></li>
+      <li *ngIf="userName"><a class="nav-link"><span class="fa fa-user"></span> Welcome, {{userName}}</a></li>
+      <li *ngIf="!userName"><a routerLink="/register" class="nav-link"><span class="fa fa-user"></span> Register</a></li>
       <li><a routerLink="/setting" class="nav-link"><span class="fa fa-wrench"></span> Setting</a></li>
     </ul>
   </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RecordRTCService } from "../../services/record.service";
 
 @Component({
   selector: 'app-header',
@@ -6,8 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
-  constructor() { }
+userName:string;
+  constructor(private recordRTCService:RecordRTCService) { 
+    this.recordRTCService.userNameObs.subscribe((userNameObs) => {
+      console.log("userNameObs=="+userNameObs);
+      this.userName = userNameObs
+    });
+  }
 
   ngOnInit(): void {
   }
