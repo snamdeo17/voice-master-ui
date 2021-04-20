@@ -5,3 +5,15 @@
     text-align: right !important;
     display: block !important;
 }
+
+@media only screen and (min-width:320px) and (max-width:767px) {
+	.info-section .p-overlaypanel {
+		width:310px !important
+	}
+	.p-datatable table {
+		table-layout: auto !important;
+	}
+	.p-datatable-wrapper {
+		overflow-x: auto;
+	}
+}

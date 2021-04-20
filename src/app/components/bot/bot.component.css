@@ -171,3 +171,46 @@ color:#2E054F;
 	width: 59px;
 	height: auto;
 }
+.loggedIn-user-section {
+	display: none;
+}
+.loggedIn-user-section span
+{
+	color:#772853;
+}
+.loggedIn-user-section b
+{
+	color:#312944;
+	font-size: 13px;
+}
+
+
+/* Responsive css */
+@media only screen and (min-width:320px) and (max-width:767px) {
+	.commands-section ul{
+		padding-inline-start: 0;
+	}
+	.commands-section ul li{
+		font-size: 12px;
+	}
+	.alert {
+		margin-top: 10px;
+	}
+	.voice-image img {
+		width: 150px;
+	}
+	.loggedIn-user-section {
+		display: block;
+	}
+	.message-box {
+		padding:0;
+	}
+	.listen-text {
+		font-size: 15px;
+	}
+}
+@media only screen and (min-width:768px) and (max-width:1024px) {
+	.voice-image img {
+		width: 153px;
+	}
+}

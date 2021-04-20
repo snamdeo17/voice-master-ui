@@ -59,6 +59,7 @@ export class BotComponent implements OnInit {
   counterRetry: number = 2;
   phrase$:string;
   billPaidStatus:boolean=false;
+  userName:string;
 
   constructor(
     private senseService: SenseService,
@@ -74,6 +75,9 @@ export class BotComponent implements OnInit {
 
       }
     );
+    this.recordRTCService.userNameObs.subscribe((userNameObs) => {
+      this.userName = userNameObs
+    });
     this.message$ = this.recognized$.pipe(tap(console.log));
 
     const speaking$ = this.senseService
