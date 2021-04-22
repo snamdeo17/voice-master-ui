@@ -3,6 +3,7 @@
 }
 .navbar-brand {
     color: #fff;
+    font-family: fantasy;
 }
 .navbar-nav>li>a {
     color: #fff !important;;
@@ -18,5 +19,8 @@ color:unset;
 @media only screen and (min-width:320px) and (max-width:767px) {
 	.loggedin-username {
         display: none;
+    }
+    .navbar-brand img {
+        height: 25px;
     }
 }
