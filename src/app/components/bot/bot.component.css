@@ -187,6 +187,9 @@ color:#2E054F;
 
 /* Responsive css */
 @media only screen and (min-width:320px) and (max-width:767px) {
+	.alert-heading {
+		font-size: 13px;
+	}
 	.commands-section ul{
 		padding-inline-start: 0;
 	}
@@ -197,7 +200,7 @@ color:#2E054F;
 		margin-top: 10px;
 	}
 	.voice-image img {
-		width: 150px;
+		width: 130px;
 		margin-top:0px;
 	}
 	.loggedIn-user-section {
@@ -208,6 +211,9 @@ color:#2E054F;
 	}
 	.listen-text {
 		font-size: 15px;
+	}
+	.output-msg {
+		font-size: 14px;
 	}
 }
 @media only screen and (min-width:768px) and (max-width:1024px) {
