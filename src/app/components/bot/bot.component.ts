@@ -49,17 +49,17 @@ export class BotComponent implements OnInit {
   userId$: string;
   accountBalance$: string;
   isAccntBalance: boolean = false;
-  subscription: Subscription;  
-  billNotificatonSubscription : Subscription;
+  subscription: Subscription;
+  billNotificatonSubscription: Subscription;
   defaultAlertInput: string = "show my bills";
   blobUrl = this.recordRTCService?.blobUrl;
   isBillPending: boolean = false;
   pendingBills: PendingBills[];
   micAccess$ = this.senseService.hasMicrofonAccess$;
   counterRetry: number = 2;
-  phrase$:string;
-  billPaidStatus:boolean=false;
-  userName:string;
+  phrase$: string;
+  billPaidStatus: boolean = false;
+  userName: string;
 
   constructor(
     private senseService: SenseService,
@@ -103,9 +103,10 @@ export class BotComponent implements OnInit {
           // if input "bye-bye"
           // userid set to null and close the session
           msg = msg.toLowerCase();
+          msg = msg.replace("yash", "yes");
           if (msg.includes("master") || msg === "yes") {
             var result = msg.replace("master", "").replace("-", " ");
-            console.log("result==" +result);
+            console.log("result==" + result);
             msg = result.trim();
 
             //Reset voice auth trial count 
@@ -126,22 +127,22 @@ export class BotComponent implements OnInit {
                   if (data["userId"] == undefined) {
                     this.userId$ = this.userId$;
                     this.isAccntBalance = false;
-                    
+
                   } else if (data["userId"] == "") {
                     //user logged out after Bye Bye
                     this.userId$ = null;
                     this.isAccntBalance = false;
                     this.recordRTCService.userName.next("");
-                    
+
                   } else if (data["userId"] != undefined) {
                     this.userId$ = data["userId"];
                     this.isAccntBalance = true;
                   }
                   const message = data["resp"];
                   const pendingBillPresent = data["pendingBill"];
-                  
+
                   this.phrase$ = data["phrase"];
-                  console.log("phrase is:"+this.phrase$)
+                  console.log("phrase is:" + this.phrase$)
 
                   this.isBillPending = false;
                   this.pendingBills = message;
@@ -155,7 +156,7 @@ export class BotComponent implements OnInit {
                     message[0].billname == null
                   ) {
                     //console.log('both null');
-                    if(message.includes("I have paid the amount of")) {
+                    if (message.includes("I have paid the amount of")) {
                       this.billPaidStatus = true;
                     } else {
                       this.billPaidStatus = false;
@@ -231,7 +232,7 @@ export class BotComponent implements OnInit {
       this.isVoiceAuthenticationInProgress = false;
       if (this.isVoiceAuthenticated$) {
         this.isAccntBalance = true;
-        
+
       }
       console.log('isVoiceAuthenticated$' + this.isVoiceAuthenticated$);
     })
@@ -253,9 +254,9 @@ export class BotComponent implements OnInit {
     this.senseService.activate();
   }
 
-  getAlertForPendingBill() {  
+  getAlertForPendingBill() {
     if (!this.isVoiceAuthenticationInProgress) {
-      this.subscription = timer(3*60*1000, 10*60*1000)
+      this.subscription = timer(3 * 60 * 1000, 10 * 60 * 1000)
         .pipe(
           switchMap(() =>
             this.botInteraction.sendMessge(this.defaultAlertInput, this.userId$, this.isVoiceAuthenticated$)
@@ -274,7 +275,7 @@ export class BotComponent implements OnInit {
               this.isBillPending = true;
               this.pendingBills = message;
               this.senseService.speak(MessageToSpeakOut);
-            } else if(this.isVoiceCommandGiven) {              
+            } else if (this.isVoiceCommandGiven) {
               this.resetVoiceCommandFlag();
             }
           } else {
@@ -284,13 +285,13 @@ export class BotComponent implements OnInit {
     }
   }
 
-  resetVoiceCommandFlag() {   
-     const source = timer(1000, 60*1000);
-     this.billNotificatonSubscription = source.subscribe(val => {
-      if(val === 2) {
-        this.isVoiceCommandGiven = false ;
+  resetVoiceCommandFlag() {
+    const source = timer(1000, 60 * 1000);
+    this.billNotificatonSubscription = source.subscribe(val => {
+      if (val === 2) {
+        this.isVoiceCommandGiven = false;
         this.billNotificatonSubscription.unsubscribe();
-      }            
-    });    
+      }
+    });
   }
 }
