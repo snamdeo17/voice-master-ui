@@ -245,7 +245,9 @@ export class BotComponent implements OnInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.register$.unsubscribe();
-    this.billNotificatonSubscription.unsubscribe();
+    if(this.billNotificatonSubscription) {
+      this.billNotificatonSubscription.unsubscribe();
+    }
     this.destroy$.next();
     this.destroy$.complete();
   }
