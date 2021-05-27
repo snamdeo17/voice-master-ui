@@ -60,7 +60,7 @@ export class BotComponent implements OnInit {
   phrase$: string;
   billPaidStatus: boolean = false;
   userName: string;
-
+  isStartListening:boolean;
   constructor(
     private senseService: SenseService,
     private botInteraction: BotInteractionService,
@@ -72,14 +72,16 @@ export class BotComponent implements OnInit {
     this.register$ = this.customerService.isRegisterOpen$.subscribe(
       (isRegisterOpen: boolean) => {
         this.isRegisterOpen = isRegisterOpen;
-
       }
     );
     this.recordRTCService.userNameObs.subscribe((userNameObs) => {
       this.userName = userNameObs
     });
+    this.senseService.startListen.subscribe((value)=>{
+      this.isStartListening = value;
+    })
+          
     this.message$ = this.recognized$.pipe(tap(console.log));
-
     const speaking$ = this.senseService
       .getType(SpeakingStarted)
       .pipe(map(() => "Speaking..."));
@@ -89,7 +91,6 @@ export class BotComponent implements OnInit {
       .pipe(map(() => "Listening..."));
 
     this.state$ = merge(speaking$, listening$);
-
     this.recognized$
       .pipe(
         debounceTime(200),
@@ -102,6 +103,10 @@ export class BotComponent implements OnInit {
 
           // if input "bye-bye"
           // userid set to null and close the session
+          console.log("outside ==" +this.isStartListening);
+          // Listen only when "Start to Listen" button is clicked
+        if(this.isStartListening) {
+          console.log("Inside ==" +this.isStartListening);
           msg = msg.toLowerCase();
           msg = msg.replace("yash", "yes");
           if (msg.includes("master") || msg === "yes") {
@@ -177,7 +182,7 @@ export class BotComponent implements OnInit {
 
                     this.senseService.speak(message);
                     if (message.includes("Thank you")) {
-                      this.compareVoice();
+                        this.compareVoice(); 
                     }
                   } else if (message[0].pendingBillName != null) {
                     //console.log('line 130');
@@ -191,9 +196,19 @@ export class BotComponent implements OnInit {
           } else {
             console.log("command not started from master");
           }
+        }
         }, takeUntil(this.destroy$))
       )
       .subscribe();
+  }
+
+  startToListen() {
+    this.isStartListening = !this.isStartListening;
+    this.senseService.isStartListening.next(true);
+  }
+  stopToListen() {
+    this.isStartListening = !this.isStartListening;
+    this.senseService.isStartListening.next(false);
   }
 
   private delay(ms: number) {

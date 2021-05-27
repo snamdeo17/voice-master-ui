@@ -47,9 +47,16 @@
         <img src="assets/voice.png" />
     </div>
     <div class="message-box">
-        <h5 class="listen-text">Input: {{ message$ | async }}</h5>
+        <h5 class="listen-text" *ngIf="isStartListening">Input: {{ message$ | async }}</h5>
+        <h5 class="listen-text" *ngIf="!isStartListening">Input:</h5>
     </div>
-    <button type="button" class="btn btn-info activate" (click)="activate()">Activate</button>
+    
+    <div class="btn-section">
+        <img src="assets/blinking-arrow.gif" *ngIf="!isStartListening"/>
+        <!-- <button type="button" class="btn btn-info activate" (click)="activate()">Activate</button> -->
+        <button *ngIf="!isStartListening" type="button" class="btn btn-info" (click)="startToListen()">Start To Listening</button>
+        <button *ngIf="isStartListening" type="button" class="btn btn-secondary" (click)="stopToListen()">Stop To Listening</button>
+    </div>
   </div>
 </div>
 <div class="col-md-8">

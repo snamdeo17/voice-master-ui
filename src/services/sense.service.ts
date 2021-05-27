@@ -37,6 +37,9 @@ export class SenseService {
 
 	private _action$ = new Subject<Action>();
 	action$ = this._action$.asObservable();
+	
+	isStartListening = new BehaviorSubject(false);
+	startListen = this.isStartListening.asObservable();
 
 	hasMicrofonAccess$ = from(
 		navigator.mediaDevices.getUserMedia({ audio: true })
